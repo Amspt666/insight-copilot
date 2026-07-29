@@ -1,0 +1,262 @@
+# ============================================================
+# InsightCopilot 语义层 · Olist 巴西电商数据集
+# 作用：把“业务语言”钉死成“确定口径的 SQL”，是可信闭环的第一层。
+# 修改口径只需改本文件，无需动代码。
+# ============================================================
+
+dataset:
+  name: Olist 巴西电商公开数据集
+  description: >
+    巴西电商平台 Olist 2016-09 至 2018-10 的真实脱敏交易数据，
+    覆盖订单、商品明细、支付、评价、客户、卖家、商品、品类翻译共 8 张表。
+  currency: BRL（巴西雷亚尔）
+  # 数据为静态历史快照：所有“最近/今年/去年”等相对时间，一律以该锚点推算
+  time_anchor_sql: "SELECT MAX(order_purchase_timestamp)::DATE FROM orders"
+
+# ---------------- 表与字段（业务含义） ----------------
+tables:
+  orders:
+    description: 订单主表，一行 = 一个订单
+    columns:
+      order_id: 订单 ID（主键）
+      customer_id: 客户 ID（每次下单生成新值，同人多单不同值；识别同一人须用 customers.customer_unique_id）
+      order_status: "订单状态：delivered 已送达 / shipped 已发货 / canceled 已取消 / unavailable 缺货 / invoiced 已开票 / processing 处理中 / created 已创建 / approved 已支付"
+      order_purchase_timestamp: 下单时间（主要时间维度）
+      order_approved_at: 支付确认时间
+      order_delivered_carrier_date: 交予物流时间
+      order_delivered_customer_date: 实际送达时间（未送达为空）
+      order_estimated_delivery_date: 预计送达时间
+  order_items:
+    description: 订单商品明细，一行 = 订单中的一个商品行
+    columns:
+      order_id: 订单 ID（关联 orders）
+      order_item_id: 订单内商品序号（1 起）
+      product_id: 商品 ID（关联 products）
+      seller_id: 卖家 ID（关联 sellers）
+      shipping_limit_date: 卖家发货期限
+      price: 商品金额（BRL，不含运费）
+      freight_value: 该行分摊运费（BRL）
+  payments:
+    description: 订单支付流水，一行 = 一笔支付（一单可有多笔/多种方式）
+    columns:
+      order_id: 订单 ID（关联 orders）
+      payment_sequential: 支付序号
+      payment_type: "支付方式：credit_card 信用卡 / boleto 巴西银行汇票 / voucher 代金券 / debit_card 借记卡 / not_defined 未定义"
+      payment_installments: 分期期数（1 = 一次性）
+      payment_value: 该笔支付金额（BRL）
+  reviews:
+    description: 订单评价，一行 = 一条评价（一单可能多条，取最新一条为准）
+    columns:
+      review_id: 评价 ID
+      order_id: 订单 ID（关联 orders）
+      review_score: 评分（整数 1-5，5 最好）
+      review_comment_title: 评价标题（葡语，可空）
+      review_comment_message: 评价正文（葡语，可空）
+      review_creation_date: 评价提交时间
+      review_answer_timestamp: 评价系统登记时间
+  customers:
+    description: 客户表，一行 = 一条客户-城市记录
+    columns:
+      customer_id: 客户 ID（关联 orders）
+      customer_unique_id: 客户唯一标识（识别同一真实用户用此列）
+      customer_zip_code_prefix: 邮编前缀
+      customer_city: 城市
+      customer_state: 州（两位缩写，如 SP/RJ/MG）
+  products:
+    description: 商品表，一行 = 一个商品
+    columns:
+      product_id: 商品 ID（主键）
+      product_category_name: 品类名（葡萄牙语，英文名见 category_translation）
+      product_weight_g: 重量（克）
+      product_length_cm: 长（厘米）
+      product_height_cm: 高（厘米）
+      product_width_cm: 宽（厘米）
+  sellers:
+    description: 卖家表
+    columns:
+      seller_id: 卖家 ID（主键）
+      seller_city: 城市
+      seller_state: 州
+  category_translation:
+    description: 品类葡英对照表
+    columns:
+      product_category_name: 品类名（葡萄牙语）
+      product_category_name_english: 品类名（英语）
+
+# ---------------- 连接关系 ----------------
+join_graph:
+  - orders.customer_id = customers.customer_id
+  - order_items.order_id = orders.order_id
+  - order_items.product_id = products.product_id
+  - order_items.seller_id = sellers.seller_id
+  - payments.order_id = orders.order_id
+  - reviews.order_id = orders.order_id
+  - products.product_category_name = category_translation.product_category_name
+
+# ---------------- 指标口径（业务语言 → SQL） ----------------
+metrics:
+  revenue:
+    name: 销售额
+    zh_terms: [销售额, 成交金额, 营收, GMV]
+    description: 有效订单的商品金额合计（不含运费）。有效订单 = 状态非 canceled 且非 unavailable
+    sql: SUM(order_items.price)
+  order_volume:
+    name: 订单量
+    zh_terms: [订单量, 订单数, 单量, 下单量]
+    description: 有效订单数（去重订单）
+    sql: COUNT(DISTINCT orders.order_id)
+  item_volume:
+    name: 商品件数
+    zh_terms: [商品件数, 售出件数, 件数]
+    description: 售出的商品行数
+    sql: COUNT(*)
+  aov:
+    name: 客单价
+    zh_terms: [客单价, 平均订单金额, 单均金额, AOV]
+    description: 销售额 / 订单量
+    sql: SUM(order_items.price) / COUNT(DISTINCT orders.order_id)
+  repeat_purchase_rate:
+    name: 复购率
+    zh_terms: [复购率, 回头客比例]
+    description: 有效订单数 ≥ 2 的独立客户数 / 独立客户总数（按 customer_unique_id 去重）
+    sql: >
+      SELECT COUNT(*) FILTER (cnt >= 2) * 1.0 / COUNT(*) FROM (
+        SELECT c.customer_unique_id, COUNT(DISTINCT o.order_id) AS cnt
+        FROM customers c JOIN orders o ON o.customer_id = c.customer_id
+        WHERE o.order_status NOT IN ('canceled','unavailable')
+        GROUP BY c.customer_unique_id) t
+  positive_review_rate:
+    name: 好评率
+    zh_terms: [好评率, 满意率]
+    description: 评分 ≥ 4 的评价占比
+    sql: COUNT(*) FILTER (review_score >= 4) * 1.0 / COUNT(*)
+  negative_review_rate:
+    name: 差评率
+    zh_terms: [差评率]
+    description: 评分 ≤ 2 的评价占比
+    sql: COUNT(*) FILTER (review_score <= 2) * 1.0 / COUNT(*)
+  avg_review_score:
+    name: 平均评分
+    zh_terms: [平均评分, 均分]
+    sql: AVG(review_score)
+  avg_delivery_days:
+    name: 平均配送时长（天）
+    zh_terms: [配送时长, 送达时长, 物流时长, 平均送达时间]
+    description: 仅统计已送达订单，从下单到签收的天数
+    sql: AVG(DATE_DIFF('day', order_purchase_timestamp, order_delivered_customer_date))
+  freight_ratio:
+    name: 运费占比
+    zh_terms: [运费占比, 运费率]
+    description: 运费合计 / 商品金额合计
+    sql: SUM(order_items.freight_value) / SUM(order_items.price)
+  installment_rate:
+    name: 分期使用率
+    zh_terms: [分期率, 分期使用率]
+    description: 分期期数 > 1 的支付金额占比
+    sql: SUM(payment_value) FILTER (payment_installments > 1) / SUM(payment_value)
+
+# ---------------- 歧义与澄清规则 ----------------
+ambiguity_rules:
+  - trigger_terms: [销量]
+    clarify_question: 您说的“销量”希望按哪个口径统计？
+    options:
+      - label: 商品件数
+        definition: 售出的商品行数（COUNT(*)）
+      - label: 订单数
+        definition: 成交订单数（COUNT(DISTINCT order_id)）
+      - label: 销售额
+        definition: 成交金额（SUM(price)）
+  - trigger_terms: [表现, 业绩]
+    clarify_question: “业绩/表现”可以衡量很多指标，您最关心哪一项？
+    options:
+      - label: 销售额与订单量
+        definition: 经营规模（SUM(price)、订单数）
+      - label: 好评率与评分
+        definition: 用户体验（review_score）
+      - label: 复购率
+        definition: 客户留存
+      - label: 配送时长
+        definition: 物流体验
+    note: 只要问题中出现”表现/业绩”且没有明确指定指标，必须反问。即使有时间限定（如”2018年表现”），仍需反问选择指标。
+  - trigger_terms: [大客户, 优质客户, VIP, vip]
+    clarify_question: 平台没有预设该客户分层，您想如何定义？
+    options:
+      - label: 累计消费前 10%
+        definition: 按累计消费金额排序取头部
+      - label: 下单 ≥3 次
+        definition: 按订单数界定
+  - trigger_terms: [忠实客户]
+    clarify_question: “忠实客户”希望如何定义？
+    options:
+      - label: 下单 ≥2 次
+        definition: 即复购客户
+      - label: 下单 ≥3 次
+        definition: 更严格的复购口径
+  - trigger_terms: [优质卖家]
+    clarify_question: “优质卖家”希望如何定义？
+    options:
+      - label: 平均评分 ≥4.5
+        definition: 按评价界定
+      - label: 销售额前 10%
+        definition: 按规模界定
+  - trigger_terms: [热卖, 畅销]
+    clarify_question: “热卖/畅销”需要一个口径和阈值，您倾向哪种？
+    options:
+      - label: 销售额前 10
+        definition: 按成交金额
+      - label: 售出件数前 10
+        definition: 按商品件数
+  - trigger_terms: [大订单]
+    clarify_question: “大订单”希望按什么阈值界定？
+    options:
+      - label: 金额 >500 BRL
+        definition: 高金额订单
+      - label: 金额前 10%
+        definition: 按分布分位
+  - trigger_terms: [新用户]
+    clarify_question: “新用户”希望按什么时间窗界定？
+    options:
+      - label: 近 6 个月首次下单
+        definition: 以数据最大日期为锚
+      - label: 当年首次下单
+        definition: 按自然年
+  - trigger_terms: [最好, 最佳, 表现最好, 最受欢迎, 最畅销, 最强, 最厉害]
+    clarify_question: “最好/最佳”可以用不同指标衡量，您更关注哪个维度？
+    options:
+      - label: 销售额最高
+        definition: 按成交金额
+      - label: 销量最高
+        definition: 按售出件数
+      - label: 好评率最高
+        definition: 按用户评分
+  - trigger_terms: [购买力, 消费能力, 消费水平]
+    clarify_question: “购买力/消费能力”希望的衡量方式是？
+    options:
+      - label: 客单价
+        definition: 平均每单金额
+      - label: 累计消费
+        definition: 总消费金额
+      - label: 下单频次
+        definition: 一段时间内下单次数
+  - trigger_terms: [行业]
+    clarify_question: '「行业」在本数据集中没有直接对应，您是指商品品类（如健康美容、运动户外）吗？'
+    options:
+      - label: 商品品类
+        definition: 按 products.product_category_name 分类
+      - label: 卖家所在城市/州
+        definition: 按地理位置
+  - trigger_terms: [退货, 退款, 退换, 退单]
+    note: Olist 数据集不包含退货/退款/退单数据。用户问及此类问题时，必须拒答（refuse），说明数据集不含退货信息。
+  - trigger_terms: [用户, 客户数]
+    note: 客户一律按 customers.customer_unique_id 去重；customer_id 是单次下单 ID，不能用于认人
+  - trigger_terms: [最近, 今年, 去年, 上个月, 本周, 近三年]
+    note: 数据为 2016-09 至 2018-10 的静态快照，相对时间以数据最大日期为锚点推算
+
+# ---------------- 全局口径约定 ----------------
+conventions:
+  - 除用户明确说明外，所有经营指标默认只统计有效订单（order_status NOT IN ('canceled','unavailable')）
+  - 金额单位为 BRL，结果保留两位小数
+  - 品类展示优先输出英文名（category_translation.product_category_name_english）
+  - 同比/环比按下单时间（order_purchase_timestamp）计算
+  - “Top N”未指定 N 时默认取 10
+  - 仅生成只读 SELECT；禁止 INSERT/UPDATE/DELETE/DDL

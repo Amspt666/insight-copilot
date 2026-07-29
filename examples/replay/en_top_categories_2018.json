@@ -1,0 +1,77 @@
+{
+ "question": "Which five product categories generated the most revenue in 2018?",
+ "status": "ok",
+ "stages": [
+  {
+   "stage": "execute",
+   "ok": true,
+   "attempt": 0
+  },
+  {
+   "stage": "backtranslate",
+   "ok": true,
+   "reason": "回译校验不可用：LLM 调用失败：curl failed: curl: (56) Recv failure: Connection reset by peer\n"
+  }
+ ],
+ "gate": {
+  "action": "answer",
+  "reason": "问题询问2018年收入最高的产品类别，涉及电商经营数据且语义明确，数据集中存在所需字段，无需反问。",
+  "clarify_question": "",
+  "options": []
+ },
+ "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1\nORDER BY revenue DESC\nLIMIT 5",
+ "explanation": "统计2018年各类商品的总销售额，并列出销售额最高的前五个商品类别。",
+ "consistency": {
+  "consistent": true,
+  "reason": "回译校验不可用：LLM 调用失败：curl failed: curl: (56) Recv failure: Connection reset by peer\n",
+  "unknown": true
+ },
+ "columns": [
+  "category",
+  "revenue"
+ ],
+ "rows": [
+  [
+   "health_beauty",
+   770002.81
+  ],
+  [
+   "watches_gifts",
+   708305.95
+  ],
+  [
+   "bed_bath_table",
+   537514.13
+  ],
+  [
+   "sports_leisure",
+   530182.18
+  ],
+  [
+   "computers_accessories",
+   502432.09
+  ]
+ ],
+ "truncated": false,
+ "chart": {
+  "type": "bar",
+  "x": "category",
+  "y": [
+   "revenue"
+  ]
+ },
+ "insight": "2018 年收入最高的五个产品类别依次为：health_beauty（770002.81）、watches_gifts（708305.95）、bed_bath_table（537514.13）、sports_leisure（530182.18）和 computers_accessories（502432.09）。其中，health_beauty 以 770002.81 的销售额位居榜首，比第二名的 watches_gifts 高出 [未溯源:61696.86]，领先优势显著。",
+ "grounding": {
+  "total": 8,
+  "supported": 7,
+  "faithfulness": 0.875,
+  "unsupported": [
+   "61696.86"
+  ]
+ },
+ "repairs": 0,
+ "warning": "洞察中有 1 个数字未能溯源，已标记。",
+ "latency_ms": 550471,
+ "model": "deepseek-v4-flash",
+ "category": "English QA"
+}

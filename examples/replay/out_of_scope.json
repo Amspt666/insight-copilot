@@ -1,0 +1,14 @@
+{
+ "question": "今天天气怎么样？",
+ "status": "refuse",
+ "stages": [],
+ "gate": {
+  "action": "refuse",
+  "reason": "问题与电商经营数据无关，属于实时天气查询",
+  "clarify_question": "",
+  "options": []
+ },
+ "refuse_reason": "问题与电商经营数据无关，属于实时天气查询",
+ "latency_ms": 9076,
+ "category": "可信机制·拒答"
+}

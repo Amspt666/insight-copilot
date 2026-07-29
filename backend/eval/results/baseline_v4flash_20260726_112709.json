@@ -1,0 +1,1032 @@
+{
+ "config": "baseline",
+ "enable": {
+  "clarify": false,
+  "semantic": false,
+  "repair": false,
+  "backtranslate": false,
+  "grounding": false
+ },
+ "summary": {
+  "total": 100,
+  "answerable": {
+   "n": 70,
+   "execution_accuracy": 0.7714,
+   "answer_rate": 1.0,
+   "wrong_refusal_rate": 0.0,
+   "wrong_clarify_rate": 0.0,
+   "avg_repairs": 0.0,
+   "insight_faithfulness": null,
+   "backtranslate_consistency": null
+  },
+  "clarify": {
+   "n": 15,
+   "clarify_rate": 0.0
+  },
+  "refuse": {
+   "n": 15,
+   "refuse_rate": 0.0
+  },
+  "avg_latency_s": 1.5
+ },
+ "records": [
+  {
+   "id": "A02",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT customer_unique_id) AS unique_customers\nFROM customers",
+   "ex_match": true
+  },
+  {
+   "id": "A04",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT seller_id) AS seller_count\nFROM sellers",
+   "ex_match": true
+  },
+  {
+   "id": "A05",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT ROUND(AVG(review_score), 2) AS avg_score\nFROM reviews",
+   "ex_match": true
+  },
+  {
+   "id": "A07",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT ROUND(SUM(oi.freight_value), 2) AS total_freight\nFROM order_items oi\nJOIN orders o ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')",
+   "ex_match": true
+  },
+  {
+   "id": "A08",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT ROUND(COUNT(*) FILTER (review_score >= 4) * 1.0 / COUNT(*), 4) AS positive_rate\nFROM reviews",
+   "ex_match": true
+  },
+  {
+   "id": "A03",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT product_id) AS total_products\nFROM products",
+   "ex_match": true
+  },
+  {
+   "id": "A01",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT order_id) AS valid_order_count\nFROM orders\nWHERE order_status NOT IN ('canceled', 'unavailable')",
+   "ex_match": true
+  },
+  {
+   "id": "A06",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "sql": "SELECT ROUND(SUM(oi.price), 2) AS total_revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')",
+   "ex_match": true
+  },
+  {
+   "id": "A09",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "sql": "SELECT ROUND(COUNT(*) FILTER (review_score <= 2) * 1.0 / COUNT(*), 4) AS negative_rate\nFROM reviews",
+   "ex_match": true
+  },
+  {
+   "id": "A15",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.1,
+   "repairs": 0,
+   "sql": "SELECT ROUND(AVG(payment_installments), 2) AS avg_installments\nFROM payments\nWHERE payment_type = 'credit_card'",
+   "ex_match": true
+  },
+  {
+   "id": "A10",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT ROUND(SUM(oi.price) / COUNT(DISTINCT o.order_id), 2) AS avg_order_value\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')",
+   "ex_match": true
+  },
+  {
+   "id": "A11",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "sql": "SELECT ROUND(AVG(DATEDIFF('day', order_purchase_timestamp, order_delivered_customer_date)), 2) AS avg_delivery_days\nFROM orders\nWHERE order_status = 'delivered'\n  AND order_delivered_customer_date IS NOT NULL",
+   "ex_match": true
+  },
+  {
+   "id": "A14",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "sql": "SELECT ROUND(SUM(payment_value) FILTER (payment_type = 'credit_card') / SUM(payment_value), 4) AS credit_card_ratio\nFROM payments",
+   "ex_match": true
+  },
+  {
+   "id": "A13",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT customer_state) AS state_count\nFROM customers",
+   "ex_match": true
+  },
+  {
+   "id": "A12",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT product_category_name_english) AS category_count\nFROM category_translation",
+   "ex_match": true
+  },
+  {
+   "id": "A16",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT ROUND(SUM(payment_value) FILTER (payment_installments > 1) * 1.0 / SUM(payment_value), 4) AS installment_payment_ratio\nFROM payments",
+   "ex_match": true
+  },
+  {
+   "id": "A17",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.1,
+   "repairs": 0,
+   "sql": "SELECT ROUND(MAX(payment_value), 2) AS max_payment\nFROM payments",
+   "ex_match": true
+  },
+  {
+   "id": "A18",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.1,
+   "repairs": 0,
+   "sql": "SELECT MAX(price) AS max_price\nFROM order_items",
+   "ex_match": true
+  },
+  {
+   "id": "A23",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.1,
+   "repairs": 0,
+   "sql": "SELECT COUNT(*) AS canceled_orders\nFROM orders\nWHERE order_status = 'canceled'",
+   "ex_match": true
+  },
+  {
+   "id": "A20",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "sql": "SELECT MIN(order_purchase_timestamp)::DATE AS start_date,\n       MAX(order_purchase_timestamp)::DATE AS end_date\nFROM orders",
+   "ex_match": true
+  },
+  {
+   "id": "A21",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT order_id) AS delivered_orders\nFROM orders\nWHERE order_status = 'delivered'",
+   "ex_match": true
+  },
+  {
+   "id": "A24",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.1,
+   "repairs": 0,
+   "sql": "SELECT COUNT(*) AS total_reviews\nFROM reviews",
+   "ex_match": true
+  },
+  {
+   "id": "A19",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT ROUND(AVG(item_count), 2) AS avg_items_per_order\nFROM (\n    SELECT oi.order_id, COUNT(*) AS item_count\n    FROM order_items oi\n    JOIN orders o ON o.order_id = oi.order_id\n    WHERE o.order_status NOT IN ('canceled', 'unavailable')\n    GROUP BY oi.order_id\n) sub",
+   "ex_match": true
+  },
+  {
+   "id": "A22",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT ROUND(AVG(oi.freight_value), 2) AS avg_freight_per_order\nFROM order_items oi\nJOIN orders o ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')",
+   "ex_match": false
+  },
+  {
+   "id": "A25",
+   "category": "A",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.2,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT order_id) AS orders_with_reviews\nFROM reviews",
+   "ex_match": true
+  },
+  {
+   "id": "B01",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT c.customer_state,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY revenue DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B05",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT customer_city,\n       COUNT(DISTINCT customer_unique_id) AS unique_customer_count\nFROM customers\nGROUP BY 1\nORDER BY unique_customer_count DESC\nLIMIT 5",
+   "ex_match": true
+  },
+  {
+   "id": "B02",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY revenue DESC\nLIMIT 5",
+   "ex_match": true
+  },
+  {
+   "id": "B04",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.9,
+   "repairs": 0,
+   "sql": "SELECT s.seller_id,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN sellers s ON s.seller_id = oi.seller_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY s.seller_id\nORDER BY revenue DESC\nLIMIT 5",
+   "ex_match": true
+  },
+  {
+   "id": "B07",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(COUNT(*) FILTER (r.review_score <= 2) * 1.0 / COUNT(*), 4) AS negative_rate\nFROM reviews r\nJOIN order_items oi ON oi.order_id = r.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nGROUP BY 1\nHAVING COUNT(*) > 100\nORDER BY negative_rate DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B06",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.8,
+   "repairs": 0,
+   "sql": "SELECT c.customer_state,\n       ROUND(AVG(r.review_score), 2) AS avg_score,\n       COUNT(DISTINCT o.order_id) AS order_volume\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nJOIN reviews r ON r.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY c.customer_state\nHAVING COUNT(DISTINCT o.order_id) > 100\nORDER BY avg_score ASC\nLIMIT 3",
+   "ex_match": false
+  },
+  {
+   "id": "B03",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.9,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       COUNT(*) AS item_volume\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY item_volume DESC\nLIMIT 5",
+   "ex_match": true
+  },
+  {
+   "id": "B08",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.2,
+   "repairs": 0,
+   "sql": "SELECT payment_type,\n       COUNT(*) AS payment_count,\n       ROUND(SUM(payment_value), 2) AS total_amount\nFROM payments\nGROUP BY 1\nORDER BY 1",
+   "ex_match": true
+  },
+  {
+   "id": "B09",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "sql": "SELECT c.customer_state,\n       ROUND(AVG(DATEDIFF('day', o.order_purchase_timestamp, o.order_delivered_customer_date)), 2) AS avg_delivery_days\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_delivered_customer_date IS NOT NULL\nGROUP BY 1\nORDER BY avg_delivery_days DESC\nLIMIT 5",
+   "ex_match": true
+  },
+  {
+   "id": "B15",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT c.customer_state,\n       COUNT(DISTINCT o.order_id) AS order_volume\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY order_volume DESC\nLIMIT 5",
+   "ex_match": true
+  },
+  {
+   "id": "B11",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.9,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND c.customer_state = 'SP'\nGROUP BY 1\nORDER BY revenue DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B14",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT s.seller_id,\n       COUNT(*) AS bad_review_count\nFROM reviews r\nJOIN order_items oi ON oi.order_id = r.order_id\nJOIN sellers s ON s.seller_id = oi.seller_id\nWHERE r.review_score <= 2\nGROUP BY s.seller_id\nORDER BY bad_review_count DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B12",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "sql": "SELECT ROUND(COUNT(DISTINCT customer_id) * 1.0 / (SELECT COUNT(DISTINCT customer_id) FROM orders WHERE order_status NOT IN ('canceled', 'unavailable')), 4) AS repurchase_rate\nFROM orders\nWHERE order_status NOT IN ('canceled', 'unavailable')\nGROUP BY customer_id\nHAVING COUNT(DISTINCT order_id) > 1",
+   "ex_match": false
+  },
+  {
+   "id": "B13",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.8,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.price) / COUNT(DISTINCT oi.order_id), 2) AS avg_order_value\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY avg_order_value DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B10",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 2.3,
+   "repairs": 0,
+   "sql": "WITH top_categories AS (\n    SELECT p.product_category_name\n    FROM order_items oi\n    JOIN orders o ON o.order_id = oi.order_id\n    JOIN products p ON p.product_id = oi.product_id\n    WHERE o.order_status NOT IN ('canceled', 'unavailable')\n    GROUP BY p.product_category_name\n    ORDER BY SUM(oi.price) DESC\n    LIMIT 3\n)\nSELECT ct.product_category_name_english AS category,\n       ROUND(AVG(r.review_score), 2) AS avg_score\nFROM top_categories tc\nJOIN category_translation ct ON ct.product_category_name = tc.product_category_name\nJOIN products p ON p.product_category_name = tc.product_category_name\nJOIN order_items oi ON oi.product_id = p.product_id\nJOIN orders o ON o.order_id = oi.order_id\nJOIN reviews r ON r.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY ct.product_category_name_english",
+   "ex_match": false
+  },
+  {
+   "id": "B16",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.9,
+   "repairs": 0,
+   "sql": "SELECT c.customer_state,\n       ROUND(AVG(DATEDIFF('day', o.order_purchase_timestamp, o.order_delivered_customer_date)), 2) AS avg_delivery_days\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_delivered_customer_date IS NOT NULL\nGROUP BY c.customer_state\nHAVING COUNT(DISTINCT o.order_id) > 100\nORDER BY avg_delivery_days ASC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B17",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(AVG(oi.freight_value), 2) AS avg_freight\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY avg_freight DESC\nLIMIT 3",
+   "ex_match": false
+  },
+  {
+   "id": "B19",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "sql": "SELECT c.customer_unique_id,\n       COUNT(oi.order_item_id) AS total_items\nFROM customers c\nJOIN orders o ON o.customer_id = c.customer_id\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY c.customer_unique_id\nORDER BY total_items DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B18",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.8,
+   "repairs": 0,
+   "sql": "SELECT c.customer_state,\n       ROUND(SUM(p.payment_value) FILTER (p.payment_type = 'boleto') * 1.0 / SUM(p.payment_value), 4) AS boleto_ratio\nFROM payments p\nJOIN orders o ON o.order_id = p.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY c.customer_state\nORDER BY boleto_ratio DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B22",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT s.seller_id,\n       ROUND(AVG(r.review_score), 2) AS avg_score\nFROM reviews r\nJOIN order_items oi ON oi.order_id = r.order_id\nJOIN sellers s ON s.seller_id = oi.seller_id\nGROUP BY s.seller_id\nHAVING COUNT(r.review_id) >= 50\nORDER BY avg_score DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B21",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.8,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM order_items oi\nJOIN orders o ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1\nORDER BY revenue DESC\nLIMIT 5",
+   "ex_match": true
+  },
+  {
+   "id": "B23",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.freight_value) / NULLIF(SUM(oi.price), 0), 4) AS freight_ratio\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY freight_ratio DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B20",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 2.2,
+   "repairs": 0,
+   "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(COUNT(*) FILTER (r.review_comment_message IS NOT NULL AND r.review_comment_message != '') * 1.0 / COUNT(*), 4) AS text_review_ratio\nFROM reviews r\nJOIN order_items oi ON oi.order_id = r.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nGROUP BY 1\nHAVING COUNT(*) > 100\nORDER BY text_review_ratio DESC\nLIMIT 3",
+   "ex_match": true
+  },
+  {
+   "id": "B24",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 2.0,
+   "repairs": 0,
+   "sql": "WITH ranked AS (\n  SELECT c.customer_state,\n         p.payment_type,\n         ROUND(SUM(p.payment_value), 2) AS total_payment,\n         ROW_NUMBER() OVER (PARTITION BY c.customer_state ORDER BY SUM(p.payment_value) DESC) AS rn\n  FROM payments p\n  JOIN orders o ON o.order_id = p.order_id\n  JOIN customers c ON c.customer_id = o.customer_id\n  WHERE o.order_status NOT IN ('canceled', 'unavailable')\n  GROUP BY c.customer_state, p.payment_type\n)\nSELECT customer_state,\n       payment_type,\n       total_payment\nFROM ranked\nWHERE rn = 1\nORDER BY customer_state",
+   "ex_match": true
+  },
+  {
+   "id": "B25",
+   "category": "B",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT c.customer_state,\n       ROUND(AVG(DATEDIFF('day', o.order_purchase_timestamp, o.order_delivered_customer_date)), 2) AS avg_delivery_days\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status = 'delivered'\n  AND o.order_delivered_customer_date IS NOT NULL\nGROUP BY 1\nORDER BY avg_delivery_days DESC\nLIMIT 5",
+   "ex_match": true
+  },
+  {
+   "id": "C02",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT EXTRACT(YEAR FROM o.order_purchase_timestamp) AS year,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND EXTRACT(YEAR FROM o.order_purchase_timestamp) IN (2017, 2018)\nGROUP BY 1\nORDER BY 1",
+   "ex_match": true
+  },
+  {
+   "id": "C04",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "sql": "SELECT DATE_TRUNC('month', review_creation_date)::DATE AS month,\n       ROUND(AVG(review_score), 2) AS avg_score\nFROM reviews\nWHERE EXTRACT(YEAR FROM review_creation_date) IN (2017, 2018)\nGROUP BY 1\nORDER BY 1",
+   "ex_match": false
+  },
+  {
+   "id": "C01",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1\nORDER BY 1",
+   "ex_match": true
+  },
+  {
+   "id": "C03",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "sql": "SELECT DATE_TRUNC('month', order_purchase_timestamp)::DATE AS month,\n       COUNT(DISTINCT order_id) AS order_volume\nFROM orders\nWHERE order_status NOT IN ('canceled', 'unavailable')\n  AND order_purchase_timestamp >= DATE '2018-01-01'\n  AND order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1\nORDER BY 1",
+   "ex_match": true
+  },
+  {
+   "id": "C06",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT COUNT(DISTINCT order_id) AS order_volume\nFROM orders\nWHERE order_status NOT IN ('canceled', 'unavailable')\n  AND order_purchase_timestamp >= (SELECT MAX(order_purchase_timestamp) FROM orders) - INTERVAL '3 months'",
+   "ex_match": false
+  },
+  {
+   "id": "C05",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_purchase_timestamp >= (SELECT MAX(order_purchase_timestamp) FROM orders) - INTERVAL '12 months'\nGROUP BY 1\nORDER BY 1",
+   "ex_match": false
+  },
+  {
+   "id": "C07",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT EXTRACT(YEAR FROM o.order_purchase_timestamp) AS year,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY 1",
+   "ex_match": true
+  },
+  {
+   "id": "C08",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 2.0,
+   "repairs": 0,
+   "sql": "SELECT CASE\n         WHEN EXTRACT(QUARTER FROM o.order_purchase_timestamp) = 1 THEN '2018Q1'\n         WHEN EXTRACT(QUARTER FROM o.order_purchase_timestamp) = 2 THEN '2018Q2'\n       END AS quarter,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2018-07-01'\n  AND EXTRACT(QUARTER FROM o.order_purchase_timestamp) IN (1, 2)\nGROUP BY 1\nORDER BY 1",
+   "ex_match": true
+  },
+  {
+   "id": "C11",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT DATE_TRUNC('month', order_purchase_timestamp)::DATE AS month,\n       COUNT(DISTINCT order_id) AS order_volume\nFROM orders\nWHERE order_status NOT IN ('canceled', 'unavailable')\n  AND order_purchase_timestamp >= (SELECT MAX(order_purchase_timestamp) - INTERVAL '6 months' FROM orders)\nGROUP BY 1\nORDER BY 1",
+   "ex_match": false
+  },
+  {
+   "id": "C09",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "sql": "WITH first_order AS (\n    SELECT customer_id, MIN(order_purchase_timestamp) AS first_purchase\n    FROM orders\n    WHERE order_status NOT IN ('canceled', 'unavailable')\n    GROUP BY customer_id\n)\nSELECT DATE_TRUNC('month', first_purchase)::DATE AS month,\n       COUNT(DISTINCT customer_id) AS new_customers\nFROM first_order\nWHERE first_purchase >= DATE '2018-01-01'\n  AND first_purchase < DATE '2019-01-01'\nGROUP BY 1\nORDER BY 1",
+   "ex_match": false
+  },
+  {
+   "id": "C12",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT EXTRACT(QUARTER FROM o.order_purchase_timestamp) AS quarter,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY 1",
+   "ex_match": false
+  },
+  {
+   "id": "C14",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT DAYNAME(order_purchase_timestamp) AS day_of_week,\n       COUNT(DISTINCT order_id) AS order_volume\nFROM orders\nWHERE order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY order_volume DESC\nLIMIT 1",
+   "ex_match": false
+  },
+  {
+   "id": "C10",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 2.1,
+   "repairs": 0,
+   "sql": "WITH revenue_2017 AS (\n    SELECT ROUND(SUM(oi.price), 2) AS revenue\n    FROM orders o\n    JOIN order_items oi ON oi.order_id = o.order_id\n    WHERE o.order_status NOT IN ('canceled', 'unavailable')\n      AND EXTRACT(YEAR FROM o.order_purchase_timestamp) = 2017\n),\nrevenue_2018 AS (\n    SELECT ROUND(SUM(oi.price), 2) AS revenue\n    FROM orders o\n    JOIN order_items oi ON oi.order_id = o.order_id\n    WHERE o.order_status NOT IN ('canceled', 'unavailable')\n      AND EXTRACT(YEAR FROM o.order_purchase_timestamp) = 2018\n)\nSELECT ROUND((r2018.revenue - r2017.revenue) / r2017.revenue, 4) AS growth_rate\nFROM revenue_2017 r2017, revenue_2018 r2018",
+   "ex_match": true
+  },
+  {
+   "id": "C15",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "sql": "SELECT EXTRACT(HOUR FROM order_purchase_timestamp) AS hour,\n       COUNT(DISTINCT order_id) AS order_count\nFROM orders\nWHERE order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY order_count DESC\nLIMIT 1",
+   "ex_match": true
+  },
+  {
+   "id": "C13",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 2.4,
+   "repairs": 0,
+   "sql": "WITH monthly_revenue AS (\n    SELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month,\n           ROUND(SUM(oi.price), 2) AS revenue\n    FROM orders o\n    JOIN order_items oi ON oi.order_id = o.order_id\n    WHERE o.order_status NOT IN ('canceled', 'unavailable')\n      AND o.order_purchase_timestamp >= DATE '2018-08-01'\n      AND o.order_purchase_timestamp < DATE '2018-10-01'\n    GROUP BY 1\n)\nSELECT ROUND((revenue_201809 - revenue_201808) * 1.0 / revenue_201808, 4) AS pct_change\nFROM (SELECT revenue AS revenue_201808 FROM monthly_revenue WHERE month = DATE '2018-08-01') aug\nCROSS JOIN (SELECT revenue AS revenue_201809 FROM monthly_revenue WHERE month = DATE '2018-09-01') sep",
+   "ex_match": true
+  },
+  {
+   "id": "C18",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "sql": "SELECT EXTRACT(YEAR FROM review_creation_date) AS year,\n       ROUND(COUNT(*) FILTER (review_score >= 4) * 1.0 / COUNT(*), 4) AS positive_rate\nFROM reviews\nWHERE review_creation_date >= DATE '2017-09-01' - INTERVAL '2 years'\n  AND review_creation_date < DATE '2017-09-01'\nGROUP BY 1\nORDER BY 1",
+   "ex_match": false
+  },
+  {
+   "id": "C16",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.8,
+   "repairs": 0,
+   "sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month,\n       ROUND(AVG(EXTRACT(DAY FROM o.order_delivered_customer_date - o.order_purchase_timestamp)), 2) AS avg_delivery_days\nFROM orders o\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_delivered_customer_date IS NOT NULL\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1\nORDER BY 1",
+   "ex_match": false
+  },
+  {
+   "id": "C17",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.9,
+   "repairs": 0,
+   "sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_purchase_timestamp >= DATE '2017-01-01'\n  AND o.order_purchase_timestamp < DATE '2018-01-01'\nGROUP BY 1\nORDER BY revenue DESC\nLIMIT 1",
+   "ex_match": true
+  },
+  {
+   "id": "C19",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "sql": "SELECT CONCAT('2017', 'Q', EXTRACT(QUARTER FROM o.order_purchase_timestamp)) AS quarter,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND EXTRACT(YEAR FROM o.order_purchase_timestamp) = 2017\nGROUP BY EXTRACT(QUARTER FROM o.order_purchase_timestamp)\nORDER BY EXTRACT(QUARTER FROM o.order_purchase_timestamp)",
+   "ex_match": false
+  },
+  {
+   "id": "D01",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D02",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.8,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "C20",
+   "category": "C",
+   "expect": "answer",
+   "status": "ok",
+   "latency_s": 2.2,
+   "repairs": 0,
+   "sql": "WITH yearly_category_revenue AS (\n    SELECT EXTRACT(YEAR FROM o.order_purchase_timestamp) AS year,\n           ct.product_category_name_english AS category,\n           ROUND(SUM(oi.price), 2) AS revenue\n    FROM orders o\n    JOIN order_items oi ON oi.order_id = o.order_id\n    JOIN products p ON p.product_id = oi.product_id\n    JOIN category_translation ct ON ct.product_category_name = p.product_category_name\n    WHERE o.order_status NOT IN ('canceled', 'unavailable')\n      AND EXTRACT(YEAR FROM o.order_purchase_timestamp) IN (2017, 2018)\n    GROUP BY 1, 2\n),\nranked AS (\n    SELECT year, category, revenue,\n           ROW_NUMBER() OVER (PARTITION BY year ORDER BY revenue DESC) AS rn\n    FROM yearly_category_revenue\n)\nSELECT year, category, revenue\nFROM ranked\nWHERE rn <= 3\nORDER BY year, rn",
+   "ex_match": false
+  },
+  {
+   "id": "D04",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D03",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D07",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.2,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D06",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D05",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D08",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.6,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D09",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D10",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D11",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D15",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.1,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D14",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D12",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 1.7,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D13",
+   "category": "D",
+   "expect": "clarify",
+   "status": "error",
+   "latency_s": 1.7,
+   "repairs": 1,
+   "correct": false
+  },
+  {
+   "id": "E01",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.2,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E03",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 0.9,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E02",
+   "category": "E",
+   "expect": "refuse",
+   "status": "error",
+   "latency_s": 1.2,
+   "repairs": 1,
+   "correct": false
+  },
+  {
+   "id": "E05",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.1,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E04",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E06",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E07",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.2,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E09",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.2,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E11",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E08",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E10",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E15",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.1,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E12",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E13",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E14",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 1.3,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  }
+ ]
+}

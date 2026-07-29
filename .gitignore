@@ -1,0 +1,39 @@
+# ===== 环境 & 密钥 =====
+.env
+backend/.env
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+/dist/
+/build/
+*.egg
+.eggs/
+
+# ===== 虚拟环境 =====
+.venv/
+venv/
+env/
+
+# ===== 测试 & 缓存 =====
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== 数据库 & 运行时产物 =====
+data/olist.duckdb
+*.db
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== 评测中间产物（汇总 JSON 保留） =====
+backend/eval/results/*.jsonl

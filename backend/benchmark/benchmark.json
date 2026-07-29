@@ -1,0 +1,2484 @@
+[
+ {
+  "id": "A01",
+  "category": "A",
+  "question": "数据集中一共有多少笔有效订单？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(*) AS valid_orders FROM orders o WHERE o.order_status NOT IN ('canceled','unavailable')",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "valid_orders"
+   ],
+   "rows": [
+    [
+     "98207"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A02",
+  "category": "A",
+  "question": "一共有多少位独立客户？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(DISTINCT customer_unique_id) AS unique_customers FROM customers",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "unique_customers"
+   ],
+   "rows": [
+    [
+     "96096"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A03",
+  "category": "A",
+  "question": "平台在售商品总数是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(*) AS products FROM products",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "products"
+   ],
+   "rows": [
+    [
+     "32951"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A04",
+  "category": "A",
+  "question": "平台一共有多少个卖家？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(*) AS sellers FROM sellers",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "sellers"
+   ],
+   "rows": [
+    [
+     "3095"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A05",
+  "category": "A",
+  "question": "全部评价的平均评分是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(AVG(review_score), 2) AS avg_score FROM reviews",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "avg_score"
+   ],
+   "rows": [
+    [
+     "4.09"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A06",
+  "category": "A",
+  "question": "有效订单的总销售额是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id WHERE o.order_status NOT IN ('canceled','unavailable')",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "revenue"
+   ],
+   "rows": [
+    [
+     "13494400.74"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A07",
+  "category": "A",
+  "question": "有效订单的总运费是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(SUM(oi.freight_value), 2) AS freight\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id WHERE o.order_status NOT IN ('canceled','unavailable')",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "freight"
+   ],
+   "rows": [
+    [
+     "2245816.19"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A08",
+  "category": "A",
+  "question": "好评率是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(COUNT(*) FILTER (review_score >= 4) * 1.0 / COUNT(*), 4) AS positive_rate\nFROM reviews",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "positive_rate"
+   ],
+   "rows": [
+    [
+     "0.7707"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A09",
+  "category": "A",
+  "question": "差评率是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(COUNT(*) FILTER (review_score <= 2) * 1.0 / COUNT(*), 4) AS negative_rate\nFROM reviews",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "negative_rate"
+   ],
+   "rows": [
+    [
+     "0.1469"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A10",
+  "category": "A",
+  "question": "客单价是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(SUM(oi.price) / COUNT(DISTINCT o.order_id), 2) AS aov\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id WHERE o.order_status NOT IN ('canceled','unavailable')",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "aov"
+   ],
+   "rows": [
+    [
+     "137.42"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A11",
+  "category": "A",
+  "question": "已送达订单的平均配送时长是多少天？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(AVG(DATE_DIFF('day', order_purchase_timestamp, order_delivered_customer_date)), 2) AS avg_days\nFROM orders WHERE order_status = 'delivered'",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "avg_days"
+   ],
+   "rows": [
+    [
+     "12.5"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A12",
+  "category": "A",
+  "question": "平台商品覆盖多少个品类？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(*) AS categories FROM category_translation",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "categories"
+   ],
+   "rows": [
+    [
+     "71"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A13",
+  "category": "A",
+  "question": "客户分布在多少个不同的州？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(DISTINCT customer_state) AS states FROM customers",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "states"
+   ],
+   "rows": [
+    [
+     "27"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A14",
+  "category": "A",
+  "question": "信用卡支付金额占全部支付金额的比例是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(SUM(payment_value) FILTER (payment_type = 'credit_card') / SUM(payment_value), 4) AS credit_card_ratio\nFROM payments",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "credit_card_ratio"
+   ],
+   "rows": [
+    [
+     "0.7834"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A15",
+  "category": "A",
+  "question": "信用卡支付的平均分期期数是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(AVG(payment_installments), 2) AS avg_installments\nFROM payments WHERE payment_type = 'credit_card'",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "avg_installments"
+   ],
+   "rows": [
+    [
+     "3.51"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A16",
+  "category": "A",
+  "question": "分期付款（期数大于1）的支付金额占比是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(SUM(payment_value) FILTER (payment_installments > 1) / SUM(payment_value), 4) AS installment_ratio\nFROM payments",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "installment_ratio"
+   ],
+   "rows": [
+    [
+     "0.631"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A17",
+  "category": "A",
+  "question": "单笔支付的最大金额是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(MAX(payment_value), 2) AS max_payment FROM payments",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "max_payment"
+   ],
+   "rows": [
+    [
+     "13664.08"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A18",
+  "category": "A",
+  "question": "售出商品中单件最高售价是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(MAX(price), 2) AS max_price FROM order_items",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "max_price"
+   ],
+   "rows": [
+    [
+     "6735.0"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A19",
+  "category": "A",
+  "question": "有效订单平均每单包含几件商品？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(COUNT(*) * 1.0 / COUNT(DISTINCT o.order_id), 2) AS items_per_order\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id WHERE o.order_status NOT IN ('canceled','unavailable')",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "items_per_order"
+   ],
+   "rows": [
+    [
+     "1.14"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A20",
+  "category": "A",
+  "question": "数据集覆盖的下单时间范围是从哪天到哪天？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT MIN(order_purchase_timestamp)::DATE AS first_order, MAX(order_purchase_timestamp)::DATE AS last_order\nFROM orders",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "first_order",
+    "last_order"
+   ],
+   "rows": [
+    [
+     "2016-09-04",
+     "2018-10-17"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A21",
+  "category": "A",
+  "question": "How many delivered orders are there in the dataset?",
+  "lang": "en",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(*) AS delivered_orders FROM orders WHERE order_status = 'delivered'",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "delivered_orders"
+   ],
+   "rows": [
+    [
+     "96478"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A22",
+  "category": "A",
+  "question": "What is the average freight value per valid order?",
+  "lang": "en",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(SUM(oi.freight_value) / COUNT(DISTINCT o.order_id), 2) AS avg_freight_per_order\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id WHERE o.order_status NOT IN ('canceled','unavailable')",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "avg_freight_per_order"
+   ],
+   "rows": [
+    [
+     "22.87"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A23",
+  "category": "A",
+  "question": "被取消的订单有多少笔？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(*) AS canceled_orders FROM orders WHERE order_status = 'canceled'",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "canceled_orders"
+   ],
+   "rows": [
+    [
+     "625"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A24",
+  "category": "A",
+  "question": "平台一共收到多少条评价？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(*) AS review_count FROM reviews",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "review_count"
+   ],
+   "rows": [
+    [
+     "99224"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A25",
+  "category": "A",
+  "question": "How many distinct orders have at least one review?",
+  "lang": "en",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(DISTINCT order_id) AS orders_with_review FROM reviews",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "orders_with_review"
+   ],
+   "rows": [
+    [
+     "98673"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B01",
+  "category": "B",
+  "question": "销售额最高的前三个州是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT c.customer_state, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY revenue DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_state",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "SP",
+     "5163867.22"
+    ],
+    [
+     "RJ",
+     "1811623.42"
+    ],
+    [
+     "MG",
+     "1573508.2"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B02",
+  "category": "B",
+  "question": "销售额最高的前五个品类是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY revenue DESC LIMIT 5",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "health_beauty",
+     "1255695.13"
+    ],
+    [
+     "watches_gifts",
+     "1198185.21"
+    ],
+    [
+     "bed_bath_table",
+     "1035964.06"
+    ],
+    [
+     "sports_leisure",
+     "979740.92"
+    ],
+    [
+     "computers_accessories",
+     "904322.02"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B03",
+  "category": "B",
+  "question": "售出商品件数最多的前五个品类是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category, COUNT(*) AS item_volume\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY item_volume DESC LIMIT 5",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "item_volume"
+   ],
+   "rows": [
+    [
+     "bed_bath_table",
+     "11097"
+    ],
+    [
+     "health_beauty",
+     "9634"
+    ],
+    [
+     "sports_leisure",
+     "8590"
+    ],
+    [
+     "furniture_decor",
+     "8298"
+    ],
+    [
+     "computers_accessories",
+     "7781"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B04",
+  "category": "B",
+  "question": "销售额最高的前五名卖家是谁？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT oi.seller_id, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY revenue DESC LIMIT 5",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "seller_id",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "4869f7a5dfa277a7dca6462dcf3b52b2",
+     "229237.63"
+    ],
+    [
+     "53243585a1d6dc2643021fd1853d8905",
+     "222776.05"
+    ],
+    [
+     "4a3ca9315b744ce9f8e9374361493884",
+     "200326.12"
+    ],
+    [
+     "fa1c13f2614d7b5c4749cbc52fecda94",
+     "192842.13"
+    ],
+    [
+     "7c67e1448b00f6e969d365cea6b010ab",
+     "187923.89"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B05",
+  "category": "B",
+  "question": "独立客户数最多的前五个城市是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT customer_city, COUNT(DISTINCT customer_unique_id) AS customers\nFROM customers\nGROUP BY 1 ORDER BY customers DESC LIMIT 5",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_city",
+    "customers"
+   ],
+   "rows": [
+    [
+     "sao paulo",
+     "14984"
+    ],
+    [
+     "rio de janeiro",
+     "6620"
+    ],
+    [
+     "belo horizonte",
+     "2672"
+    ],
+    [
+     "brasilia",
+     "2069"
+    ],
+    [
+     "curitiba",
+     "1465"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B06",
+  "category": "B",
+  "question": "平均评分最低的前三个州是哪些（订单量超过100）？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT c.customer_state, ROUND(AVG(r.review_score), 2) AS avg_score\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nJOIN reviews r ON r.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 HAVING COUNT(DISTINCT o.order_id) > 100\nORDER BY avg_score ASC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_state",
+    "avg_score"
+   ],
+   "rows": [
+    [
+     "AL",
+     "3.75"
+    ],
+    [
+     "MA",
+     "3.79"
+    ],
+    [
+     "SE",
+     "3.84"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B07",
+  "category": "B",
+  "question": "差评率最高的前三个品类是哪些（评价数超过100）？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category,\n       ROUND(COUNT(*) FILTER (r.review_score <= 2) * 1.0 / COUNT(*), 4) AS negative_rate\nFROM reviews r\nJOIN order_items oi ON oi.order_id = r.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nGROUP BY 1 HAVING COUNT(*) > 100\nORDER BY negative_rate DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "negative_rate"
+   ],
+   "rows": [
+    [
+     "fashion_male_clothing",
+     "0.2824"
+    ],
+    [
+     "office_furniture",
+     "0.2608"
+    ],
+    [
+     "fixed_telephony",
+     "0.2557"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B08",
+  "category": "B",
+  "question": "各种支付方式的支付笔数和总金额分别是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT payment_type, COUNT(*) AS payment_count, ROUND(SUM(payment_value), 2) AS total_value\nFROM payments\nGROUP BY 1 ORDER BY total_value DESC",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "payment_type",
+    "payment_count",
+    "total_value"
+   ],
+   "rows": [
+    [
+     "credit_card",
+     "76795",
+     "12542084.19"
+    ],
+    [
+     "boleto",
+     "19784",
+     "2869361.27"
+    ],
+    [
+     "voucher",
+     "5775",
+     "379436.87"
+    ],
+    [
+     "debit_card",
+     "1529",
+     "217989.79"
+    ],
+    [
+     "not_defined",
+     "3",
+     "0.0"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B09",
+  "category": "B",
+  "question": "平均配送时长最长的前五个州是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT c.customer_state,\n       ROUND(AVG(DATE_DIFF('day', o.order_purchase_timestamp, o.order_delivered_customer_date)), 2) AS avg_days\nFROM orders o JOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status = 'delivered'\nGROUP BY 1 ORDER BY avg_days DESC LIMIT 5",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_state",
+    "avg_days"
+   ],
+   "rows": [
+    [
+     "RR",
+     "29.34"
+    ],
+    [
+     "AP",
+     "27.18"
+    ],
+    [
+     "AM",
+     "26.36"
+    ],
+    [
+     "AL",
+     "24.5"
+    ],
+    [
+     "PA",
+     "23.73"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B10",
+  "category": "B",
+  "question": "销售额前三的品类各自的平均评分是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nWITH top_cat AS (\n  SELECT p.product_category_name\n  FROM orders o\n  JOIN order_items oi ON oi.order_id = o.order_id\n  JOIN products p ON p.product_id = oi.product_id\n  WHERE o.order_status NOT IN ('canceled','unavailable')\n  GROUP BY 1 ORDER BY SUM(oi.price) DESC LIMIT 3\n)\nSELECT ct.product_category_name_english AS category, ROUND(AVG(r.review_score), 2) AS avg_score\nFROM reviews r\nJOIN order_items oi ON oi.order_id = r.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE p.product_category_name IN (SELECT product_category_name FROM top_cat)\nGROUP BY 1 ORDER BY avg_score DESC",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "avg_score"
+   ],
+   "rows": [
+    [
+     "health_beauty",
+     "4.14"
+    ],
+    [
+     "watches_gifts",
+     "4.02"
+    ],
+    [
+     "bed_bath_table",
+     "3.9"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B11",
+  "category": "B",
+  "question": "圣保罗州（SP）销售额最高的前三个品类是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled','unavailable') AND c.customer_state = 'SP'\nGROUP BY 1 ORDER BY revenue DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "bed_bath_table",
+     "477794.2"
+    ],
+    [
+     "health_beauty",
+     "460474.09"
+    ],
+    [
+     "watches_gifts",
+     "431119.29"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B12",
+  "category": "B",
+  "question": "整体复购率是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ROUND(COUNT(*) FILTER (cnt >= 2) * 1.0 / COUNT(*), 4) AS repeat_rate\nFROM (\n  SELECT c.customer_unique_id, COUNT(DISTINCT o.order_id) AS cnt\n  FROM customers c JOIN orders o ON o.customer_id = c.customer_id\n  WHERE o.order_status NOT IN ('canceled','unavailable')\n  GROUP BY 1) t",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "repeat_rate"
+   ],
+   "rows": [
+    [
+     "0.0304"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B13",
+  "category": "B",
+  "question": "客单价最高的前三个品类是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.price) / COUNT(DISTINCT o.order_id), 2) AS aov\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY aov DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "aov"
+   ],
+   "rows": [
+    [
+     "computers",
+     "1231.84"
+    ],
+    [
+     "small_appliances_home_oven_and_coffee",
+     "632.61"
+    ],
+    [
+     "home_appliances_2",
+     "479.0"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B14",
+  "category": "B",
+  "question": "收到差评（评分不高于2）最多的前三名卖家是谁？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT oi.seller_id, COUNT(*) FILTER (r.review_score <= 2) AS negative_reviews\nFROM reviews r\nJOIN order_items oi ON oi.order_id = r.order_id\nGROUP BY 1 ORDER BY negative_reviews DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "seller_id",
+    "negative_reviews"
+   ],
+   "rows": [
+    [
+     "7c67e1448b00f6e969d365cea6b010ab",
+     "402"
+    ],
+    [
+     "4a3ca9315b744ce9f8e9374361493884",
+     "392"
+    ],
+    [
+     "6560211a19b47992c3666cc44a7e94c0",
+     "361"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B15",
+  "category": "B",
+  "question": "订单量最高的前五个州是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT c.customer_state, COUNT(DISTINCT o.order_id) AS order_volume\nFROM orders o JOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY order_volume DESC LIMIT 5",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_state",
+    "order_volume"
+   ],
+   "rows": [
+    [
+     "SP",
+     "41127"
+    ],
+    [
+     "RJ",
+     "12698"
+    ],
+    [
+     "MG",
+     "11496"
+    ],
+    [
+     "RS",
+     "5417"
+    ],
+    [
+     "PR",
+     "4983"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B16",
+  "category": "B",
+  "question": "平均配送时长最短的前三个州是哪些（订单量超过100）？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT c.customer_state,\n       ROUND(AVG(DATE_DIFF('day', o.order_purchase_timestamp, o.order_delivered_customer_date)), 2) AS avg_days\nFROM orders o JOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status = 'delivered'\nGROUP BY 1 HAVING COUNT(DISTINCT o.order_id) > 100\nORDER BY avg_days ASC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_state",
+    "avg_days"
+   ],
+   "rows": [
+    [
+     "SP",
+     "8.7"
+    ],
+    [
+     "MG",
+     "11.94"
+    ],
+    [
+     "PR",
+     "11.94"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B17",
+  "category": "B",
+  "question": "平均每单运费最高的前三个品类是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.freight_value) / COUNT(DISTINCT o.order_id), 2) AS avg_freight_per_order\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY avg_freight_per_order DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "avg_freight_per_order"
+   ],
+   "rows": [
+    [
+     "computers",
+     "54.34"
+    ],
+    [
+     "office_furniture",
+     "53.85"
+    ],
+    [
+     "furniture_bedroom",
+     "48.76"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B18",
+  "category": "B",
+  "question": "boleto 支付金额占比最高的前三个州是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT c.customer_state,\n       ROUND(SUM(p.payment_value) FILTER (p.payment_type = 'boleto') / SUM(p.payment_value), 4) AS boleto_ratio\nFROM payments p\nJOIN orders o ON o.order_id = p.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY boleto_ratio DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_state",
+    "boleto_ratio"
+   ],
+   "rows": [
+    [
+     "RR",
+     "0.2755"
+    ],
+    [
+     "MA",
+     "0.2677"
+    ],
+    [
+     "AP",
+     "0.2353"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B19",
+  "category": "B",
+  "question": "购买商品件数最多的前三位客户是谁？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT c.customer_unique_id, COUNT(*) AS items_bought\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY items_bought DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_unique_id",
+    "items_bought"
+   ],
+   "rows": [
+    [
+     "c8460e4251689ba205045f3ea17884a1",
+     "24"
+    ],
+    [
+     "4546caea018ad8c692964e3382debd19",
+     "21"
+    ],
+    [
+     "698e1cf81d01a3d389d96145f7fa6df8",
+     "20"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B20",
+  "category": "B",
+  "question": "带文字评价比例最高的前三个品类是哪些（评价数超过100）？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category,\n       ROUND(COUNT(*) FILTER (r.review_comment_message IS NOT NULL AND LENGTH(r.review_comment_message) > 0) * 1.0 / COUNT(*), 4) AS comment_ratio\nFROM reviews r\nJOIN order_items oi ON oi.order_id = r.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nGROUP BY 1 HAVING COUNT(*) > 100\nORDER BY comment_ratio DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "comment_ratio"
+   ],
+   "rows": [
+    [
+     "fashion_male_clothing",
+     "0.5725"
+    ],
+    [
+     "home_confort",
+     "0.5632"
+    ],
+    [
+     "fixed_telephony",
+     "0.5076"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B21",
+  "category": "B",
+  "question": "Which five product categories generated the most revenue in 2018?",
+  "lang": "en",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled','unavailable')\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1 ORDER BY revenue DESC LIMIT 5",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "health_beauty",
+     "770002.81"
+    ],
+    [
+     "watches_gifts",
+     "708305.95"
+    ],
+    [
+     "bed_bath_table",
+     "537514.13"
+    ],
+    [
+     "sports_leisure",
+     "530182.18"
+    ],
+    [
+     "computers_accessories",
+     "502432.09"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B22",
+  "category": "B",
+  "question": "Which three sellers have the highest average review score with at least 50 reviews?",
+  "lang": "en",
+  "expect": "answer",
+  "gold_sql": "\nSELECT oi.seller_id, ROUND(AVG(r.review_score), 2) AS avg_score\nFROM reviews r JOIN order_items oi ON oi.order_id = r.order_id\nGROUP BY 1 HAVING COUNT(*) >= 50\nORDER BY avg_score DESC, COUNT(*) DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "seller_id",
+    "avg_score"
+   ],
+   "rows": [
+    [
+     "d9bd94811c3338dceb4181f3dbc0c73e",
+     "4.82"
+    ],
+    [
+     "d13e50eaa47b4cbe9eb81465865d8cfc",
+     "4.81"
+    ],
+    [
+     "83e197e95a1bbabc8c75e883ed016c47",
+     "4.75"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B23",
+  "category": "B",
+  "question": "运费占商品金额比例最高的前三个品类是哪些？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.freight_value) / SUM(oi.price), 4) AS freight_ratio\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY freight_ratio DESC LIMIT 3",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "category",
+    "freight_ratio"
+   ],
+   "rows": [
+    [
+     "home_comfort_2",
+     "0.5397"
+    ],
+    [
+     "flowers",
+     "0.4404"
+    ],
+    [
+     "furniture_mattress_and_upholstery",
+     "0.3733"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B24",
+  "category": "B",
+  "question": "每个州最常用的支付方式（按支付金额）是什么？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT customer_state, payment_type, total_value FROM (\n  SELECT c.customer_state, p.payment_type, SUM(p.payment_value) AS total_value,\n         ROW_NUMBER() OVER (PARTITION BY c.customer_state ORDER BY SUM(p.payment_value) DESC) AS rn\n  FROM payments p\n  JOIN orders o ON o.order_id = p.order_id\n  JOIN customers c ON c.customer_id = o.customer_id\n  WHERE o.order_status NOT IN ('canceled','unavailable')\n  GROUP BY 1, 2) t\nWHERE rn = 1 ORDER BY customer_state",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_state",
+    "payment_type",
+    "total_value"
+   ],
+   "rows": [
+    [
+     "AC",
+     "credit_card",
+     "14625.41"
+    ],
+    [
+     "AL",
+     "credit_card",
+     "79578.16999999998"
+    ],
+    [
+     "AM",
+     "credit_card",
+     "23031.479999999992"
+    ],
+    [
+     "AP",
+     "credit_card",
+     "12199.02"
+    ],
+    [
+     "BA",
+     "credit_card",
+     "491499.65000000066"
+    ],
+    [
+     "CE",
+     "credit_card",
+     "225673.8399999997"
+    ],
+    [
+     "DF",
+     "credit_card",
+     "290418.45000000024"
+    ],
+    [
+     "ES",
+     "credit_card",
+     "246522.91000000018"
+    ],
+    [
+     "GO",
+     "credit_card",
+     "262601.11999999976"
+    ],
+    [
+     "MA",
+     "credit_card",
+     "107581.82000000011"
+    ],
+    [
+     "MG",
+     "credit_card",
+     "1449475.1099999999"
+    ],
+    [
+     "MS",
+     "credit_card",
+     "105347.10000000003"
+    ],
+    [
+     "MT",
+     "credit_card",
+     "144234.75999999975"
+    ],
+    [
+     "PA",
+     "credit_card",
+     "165792.47999999986"
+    ],
+    [
+     "PB",
+     "credit_card",
+     "106104.07000000002"
+    ],
+    [
+     "PE",
+     "credit_card",
+     "265195.77999999985"
+    ],
+    [
+     "PI",
+     "credit_card",
+     "87197.9"
+    ],
+    [
+     "PR",
+     "credit_card",
+     "612059.0499999976"
+    ],
+    [
+     "RJ",
+     "credit_card",
+     "1709626.3699999885"
+    ],
+    [
+     "RN",
+     "credit_card",
+     "80632.25000000001"
+    ],
+    [
+     "RO",
+     "credit_card",
+     "42619.03000000002"
+    ],
+    [
+     "RR",
+     "credit_card",
+     "7207.840000000001"
+    ],
+    [
+     "RS",
+     "credit_card",
+     "657045.7099999991"
+    ],
+    [
+     "SC",
+     "credit_card",
+     "474428.79000000225"
+    ],
+    [
+     "SE",
+     "credit_card",
+     "55719.17999999997"
+    ],
+    [
+     "SP",
+     "credit_card",
+     "4588147.419999971"
+    ],
+    [
+     "TO",
+     "credit_card",
+     "45477.85000000001"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "B25",
+  "category": "B",
+  "question": "Which five customer states have the longest average delivery time for delivered orders?",
+  "lang": "en",
+  "expect": "answer",
+  "gold_sql": "\nSELECT c.customer_state,\n       ROUND(AVG(DATE_DIFF('day', o.order_purchase_timestamp, o.order_delivered_customer_date)), 2) AS avg_days\nFROM orders o JOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status = 'delivered'\nGROUP BY 1 ORDER BY avg_days DESC LIMIT 5",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "customer_state",
+    "avg_days"
+   ],
+   "rows": [
+    [
+     "RR",
+     "29.34"
+    ],
+    [
+     "AP",
+     "27.18"
+    ],
+    [
+     "AM",
+     "26.36"
+    ],
+    [
+     "AL",
+     "24.5"
+    ],
+    [
+     "PA",
+     "23.73"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C01",
+  "category": "C",
+  "question": "2018 年各月的销售额是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "month",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "2018-01-01",
+     "945456.29"
+    ],
+    [
+     "2018-02-01",
+     "837895.43"
+    ],
+    [
+     "2018-03-01",
+     "981051.06"
+    ],
+    [
+     "2018-04-01",
+     "993592.98"
+    ],
+    [
+     "2018-05-01",
+     "992871.75"
+    ],
+    [
+     "2018-06-01",
+     "863265.53"
+    ],
+    [
+     "2018-07-01",
+     "878044.27"
+    ],
+    [
+     "2018-08-01",
+     "848860.1"
+    ],
+    [
+     "2018-09-01",
+     "145.0"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C02",
+  "category": "C",
+  "question": "2017 年和 2018 年各自的销售额是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT strftime(o.order_purchase_timestamp, '%Y') AS year, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable') AND strftime(o.order_purchase_timestamp, '%Y') IN ('2017', '2018')\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "year",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "2017",
+     "6108492.27"
+    ],
+    [
+     "2018",
+     "7341182.41"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C03",
+  "category": "C",
+  "question": "2018 年各月的有效订单量是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month, COUNT(DISTINCT o.order_id) AS order_volume\nFROM orders o\nWHERE o.order_status NOT IN ('canceled','unavailable')\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "month",
+    "order_volume"
+   ],
+   "rows": [
+    [
+     "2018-01-01",
+     "7187"
+    ],
+    [
+     "2018-02-01",
+     "6625"
+    ],
+    [
+     "2018-03-01",
+     "7168"
+    ],
+    [
+     "2018-04-01",
+     "6919"
+    ],
+    [
+     "2018-05-01",
+     "6833"
+    ],
+    [
+     "2018-06-01",
+     "6145"
+    ],
+    [
+     "2018-07-01",
+     "6233"
+    ],
+    [
+     "2018-08-01",
+     "6421"
+    ],
+    [
+     "2018-09-01",
+     "1"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C04",
+  "category": "C",
+  "question": "2017 年至 2018 年各月的平均评分是怎么变化的？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT DATE_TRUNC('month', r.review_creation_date)::DATE AS month, ROUND(AVG(r.review_score), 2) AS avg_score\nFROM reviews r\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "month",
+    "avg_score"
+   ],
+   "rows": [
+    [
+     "2016-10-01",
+     "4.06"
+    ],
+    [
+     "2016-11-01",
+     "3.19"
+    ],
+    [
+     "2016-12-01",
+     "2.36"
+    ],
+    [
+     "2017-01-01",
+     "4.34"
+    ],
+    [
+     "2017-02-01",
+     "4.28"
+    ],
+    [
+     "2017-03-01",
+     "4.03"
+    ],
+    [
+     "2017-04-01",
+     "4.04"
+    ],
+    [
+     "2017-05-01",
+     "4.1"
+    ],
+    [
+     "2017-06-01",
+     "4.13"
+    ],
+    [
+     "2017-07-01",
+     "4.18"
+    ],
+    [
+     "2017-08-01",
+     "4.22"
+    ],
+    [
+     "2017-09-01",
+     "4.18"
+    ],
+    [
+     "2017-10-01",
+     "4.18"
+    ],
+    [
+     "2017-11-01",
+     "4.11"
+    ],
+    [
+     "2017-12-01",
+     "3.93"
+    ],
+    [
+     "2018-01-01",
+     "4.06"
+    ],
+    [
+     "2018-02-01",
+     "4.01"
+    ],
+    [
+     "2018-03-01",
+     "3.73"
+    ],
+    [
+     "2018-04-01",
+     "3.92"
+    ],
+    [
+     "2018-05-01",
+     "4.19"
+    ],
+    [
+     "2018-06-01",
+     "4.2"
+    ],
+    [
+     "2018-07-01",
+     "4.29"
+    ],
+    [
+     "2018-08-01",
+     "4.21"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C05",
+  "category": "C",
+  "question": "最近 12 个月（以数据最新日期为准）各月销售额是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\n  AND o.order_purchase_timestamp >= (SELECT MAX(order_purchase_timestamp)::DATE FROM orders) - INTERVAL 12 MONTH\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "month",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "2017-10-01",
+     "314462.39"
+    ],
+    [
+     "2017-11-01",
+     "1003862.14"
+    ],
+    [
+     "2017-12-01",
+     "742183.79"
+    ],
+    [
+     "2018-01-01",
+     "945456.29"
+    ],
+    [
+     "2018-02-01",
+     "837895.43"
+    ],
+    [
+     "2018-03-01",
+     "981051.06"
+    ],
+    [
+     "2018-04-01",
+     "993592.98"
+    ],
+    [
+     "2018-05-01",
+     "992871.75"
+    ],
+    [
+     "2018-06-01",
+     "863265.53"
+    ],
+    [
+     "2018-07-01",
+     "878044.27"
+    ],
+    [
+     "2018-08-01",
+     "848860.1"
+    ],
+    [
+     "2018-09-01",
+     "145.0"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C06",
+  "category": "C",
+  "question": "最近 3 个月（以数据最新日期为准）的有效订单量是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT COUNT(DISTINCT o.order_id) AS order_volume\nFROM orders o\nWHERE o.order_status NOT IN ('canceled','unavailable')\n  AND o.order_purchase_timestamp >= (SELECT MAX(order_purchase_timestamp)::DATE FROM orders) - INTERVAL 3 MONTH",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "order_volume"
+   ],
+   "rows": [
+    [
+     "10075"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C07",
+  "category": "C",
+  "question": "各个年份的销售额分别是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT strftime(o.order_purchase_timestamp, '%Y') AS year, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "year",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "2016",
+     "44726.06"
+    ],
+    [
+     "2017",
+     "6108492.27"
+    ],
+    [
+     "2018",
+     "7341182.41"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C08",
+  "category": "C",
+  "question": "2018 年第一季度和第二季度的销售额分别是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT quarter_label, ROUND(SUM(price), 2) AS revenue FROM (\n  SELECT CASE WHEN o.order_purchase_timestamp < DATE '2018-04-01' THEN '2018Q1' ELSE '2018Q2' END AS quarter_label,\n         oi.price\n  FROM orders o JOIN order_items oi ON oi.order_id = o.order_id\n  WHERE o.order_status NOT IN ('canceled','unavailable')\n    AND o.order_purchase_timestamp >= DATE '2018-01-01'\n    AND o.order_purchase_timestamp < DATE '2018-07-01') t\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "quarter_label",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "2018Q1",
+     "2764402.78"
+    ],
+    [
+     "2018Q2",
+     "2849730.26"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C09",
+  "category": "C",
+  "question": "2018 年各月的新客户数（当月首次下单）是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nWITH first_order AS (\n  SELECT c.customer_unique_id, MIN(DATE_TRUNC('month', o.order_purchase_timestamp)) AS first_month\n  FROM customers c JOIN orders o ON o.customer_id = c.customer_id\n  WHERE o.order_status NOT IN ('canceled','unavailable')\n  GROUP BY 1)\nSELECT first_month::DATE AS month, COUNT(*) AS new_customers\nFROM first_order\nWHERE first_month >= DATE '2018-01-01' AND first_month < DATE '2019-01-01'\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "month",
+    "new_customers"
+   ],
+   "rows": [
+    [
+     "2018-01-01",
+     "6951"
+    ],
+    [
+     "2018-02-01",
+     "6357"
+    ],
+    [
+     "2018-03-01",
+     "6931"
+    ],
+    [
+     "2018-04-01",
+     "6698"
+    ],
+    [
+     "2018-05-01",
+     "6586"
+    ],
+    [
+     "2018-06-01",
+     "5920"
+    ],
+    [
+     "2018-07-01",
+     "6016"
+    ],
+    [
+     "2018-08-01",
+     "6209"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C10",
+  "category": "C",
+  "question": "2018 年销售额相比 2017 年的增长率是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nWITH yearly AS (\n  SELECT strftime(o.order_purchase_timestamp, '%Y') AS year, SUM(oi.price) AS revenue\n  FROM orders o JOIN order_items oi ON oi.order_id = o.order_id\n  WHERE o.order_status NOT IN ('canceled','unavailable') AND strftime(o.order_purchase_timestamp, '%Y') IN ('2017', '2018')\n  GROUP BY 1)\nSELECT ROUND((MAX(revenue) FILTER (year = '2018') - MAX(revenue) FILTER (year = '2017'))\n       / MAX(revenue) FILTER (year = '2017'), 4) AS growth_rate\nFROM yearly",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "growth_rate"
+   ],
+   "rows": [
+    [
+     "0.2018"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C11",
+  "category": "C",
+  "question": "What is the monthly valid order volume for the last 6 months of available data?",
+  "lang": "en",
+  "expect": "answer",
+  "gold_sql": "\nSELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month, COUNT(DISTINCT o.order_id) AS order_volume\nFROM orders o\nWHERE o.order_status NOT IN ('canceled','unavailable')\n  AND o.order_purchase_timestamp >= (SELECT MAX(order_purchase_timestamp)::DATE FROM orders) - INTERVAL 6 MONTH\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "month",
+    "order_volume"
+   ],
+   "rows": [
+    [
+     "2018-04-01",
+     "3296"
+    ],
+    [
+     "2018-05-01",
+     "6833"
+    ],
+    [
+     "2018-06-01",
+     "6145"
+    ],
+    [
+     "2018-07-01",
+     "6233"
+    ],
+    [
+     "2018-08-01",
+     "6421"
+    ],
+    [
+     "2018-09-01",
+     "1"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C12",
+  "category": "C",
+  "question": "各个季度的销售额分别是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT strftime(o.order_purchase_timestamp, '%Y') AS year,\n       QUARTER(o.order_purchase_timestamp) AS quarter,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1, 2 ORDER BY 1, 2",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "year",
+    "quarter",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "2016",
+     "3",
+     "207.86"
+    ],
+    [
+     "2016",
+     "4",
+     "44518.2"
+    ],
+    [
+     "2017",
+     "1",
+     "733398.94"
+    ],
+    [
+     "2017",
+     "2",
+     "1286918.78"
+    ],
+    [
+     "2017",
+     "3",
+     "1681949.0"
+    ],
+    [
+     "2017",
+     "4",
+     "2406225.55"
+    ],
+    [
+     "2018",
+     "1",
+     "2764402.78"
+    ],
+    [
+     "2018",
+     "2",
+     "2849730.26"
+    ],
+    [
+     "2018",
+     "3",
+     "1727049.37"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C13",
+  "category": "C",
+  "question": "2018 年 9 月的销售额相比 8 月变化了百分之几？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nWITH monthly AS (\n  SELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month, SUM(oi.price) AS revenue\n  FROM orders o JOIN order_items oi ON oi.order_id = o.order_id\n  WHERE o.order_status NOT IN ('canceled','unavailable')\n    AND o.order_purchase_timestamp >= DATE '2018-08-01'\n    AND o.order_purchase_timestamp < DATE '2018-10-01'\n  GROUP BY 1)\nSELECT ROUND((MAX(revenue) FILTER (month = DATE '2018-09-01') - MAX(revenue) FILTER (month = DATE '2018-08-01'))\n       / MAX(revenue) FILTER (month = DATE '2018-08-01'), 4) AS mom_change\nFROM monthly",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "mom_change"
+   ],
+   "rows": [
+    [
+     "-0.9998"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C14",
+  "category": "C",
+  "question": "一周之中哪一天的订单量最高？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT dayname(o.order_purchase_timestamp) AS weekday, COUNT(DISTINCT o.order_id) AS order_volume\nFROM orders o\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY order_volume DESC",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "weekday",
+    "order_volume"
+   ],
+   "rows": [
+    [
+     "Monday",
+     "15979"
+    ],
+    [
+     "Tuesday",
+     "15760"
+    ],
+    [
+     "Wednesday",
+     "15353"
+    ],
+    [
+     "Thursday",
+     "14571"
+    ],
+    [
+     "Friday",
+     "13949"
+    ],
+    [
+     "Sunday",
+     "11831"
+    ],
+    [
+     "Saturday",
+     "10764"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C15",
+  "category": "C",
+  "question": "一天之中哪个小时的下单量最高？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT HOUR(o.order_purchase_timestamp) AS hour_of_day, COUNT(*) AS orders\nFROM orders o\nWHERE o.order_status NOT IN ('canceled','unavailable')\nGROUP BY 1 ORDER BY orders DESC LIMIT 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "hour_of_day",
+    "orders"
+   ],
+   "rows": [
+    [
+     "16",
+     "6594"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C16",
+  "category": "C",
+  "question": "2018 年各月的平均配送时长是多少天？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month,\n       ROUND(AVG(DATE_DIFF('day', o.order_purchase_timestamp, o.order_delivered_customer_date)), 2) AS avg_days\nFROM orders o\nWHERE o.order_status = 'delivered'\n  AND o.order_purchase_timestamp >= DATE '2018-01-01'\n  AND o.order_purchase_timestamp < DATE '2019-01-01'\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "month",
+    "avg_days"
+   ],
+   "rows": [
+    [
+     "2018-01-01",
+     "14.01"
+    ],
+    [
+     "2018-02-01",
+     "16.87"
+    ],
+    [
+     "2018-03-01",
+     "16.24"
+    ],
+    [
+     "2018-04-01",
+     "11.42"
+    ],
+    [
+     "2018-05-01",
+     "11.34"
+    ],
+    [
+     "2018-06-01",
+     "9.16"
+    ],
+    [
+     "2018-07-01",
+     "8.89"
+    ],
+    [
+     "2018-08-01",
+     "7.66"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C17",
+  "category": "C",
+  "question": "2017 年销售额最高的是哪个月份？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT DATE_TRUNC('month', o.order_purchase_timestamp)::DATE AS month, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\n  AND o.order_purchase_timestamp >= DATE '2017-01-01'\n  AND o.order_purchase_timestamp < DATE '2018-01-01'\nGROUP BY 1 ORDER BY revenue DESC LIMIT 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "month",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "2017-11-01",
+     "1003862.14"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C18",
+  "category": "C",
+  "question": "最近一年的好评率与再之前一年的好评率分别是多少？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT CASE WHEN r.review_creation_date >= (SELECT MAX(review_creation_date)::DATE FROM reviews) - INTERVAL 12 MONTH\n            THEN '最近一年' ELSE '再前一年' END AS period,\n       ROUND(COUNT(*) FILTER (r.review_score >= 4) * 1.0 / COUNT(*), 4) AS positive_rate\nFROM reviews r\nWHERE r.review_creation_date >= (SELECT MAX(review_creation_date)::DATE FROM reviews) - INTERVAL 24 MONTH\nGROUP BY 1 ORDER BY 1 DESC",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "period",
+    "positive_rate"
+   ],
+   "rows": [
+    [
+     "最近一年",
+     "0.7675"
+    ],
+    [
+     "再前一年",
+     "0.7822"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C19",
+  "category": "C",
+  "question": "What was the revenue by quarter in 2017?",
+  "lang": "en",
+  "expect": "answer",
+  "gold_sql": "\nSELECT QUARTER(o.order_purchase_timestamp) AS quarter, ROUND(SUM(oi.price), 2) AS revenue\nFROM orders o JOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.order_status NOT IN ('canceled','unavailable')\n  AND o.order_purchase_timestamp >= DATE '2017-01-01'\n  AND o.order_purchase_timestamp < DATE '2018-01-01'\nGROUP BY 1 ORDER BY 1",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "quarter",
+    "revenue"
+   ],
+   "rows": [
+    [
+     "1",
+     "733398.94"
+    ],
+    [
+     "2",
+     "1286918.78"
+    ],
+    [
+     "3",
+     "1681949.0"
+    ],
+    [
+     "4",
+     "2406225.55"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C20",
+  "category": "C",
+  "question": "2017 年和 2018 年各自销售额前三的品类分别是什么？",
+  "lang": "zh",
+  "expect": "answer",
+  "gold_sql": "\nSELECT year, category, revenue, rn FROM (\n  SELECT strftime(o.order_purchase_timestamp, '%Y') AS year,\n         ct.product_category_name_english AS category,\n         ROUND(SUM(oi.price), 2) AS revenue,\n         ROW_NUMBER() OVER (PARTITION BY strftime(o.order_purchase_timestamp, '%Y') ORDER BY SUM(oi.price) DESC) AS rn\n  FROM orders o\n  JOIN order_items oi ON oi.order_id = o.order_id\n  JOIN products p ON p.product_id = oi.product_id\n  JOIN category_translation ct ON ct.product_category_name = p.product_category_name\n  WHERE o.order_status NOT IN ('canceled','unavailable') AND strftime(o.order_purchase_timestamp, '%Y') IN ('2017', '2018')\n  GROUP BY 1, 2) t\nWHERE rn <= 3 ORDER BY year, rn",
+  "note": "",
+  "gold_result": {
+   "columns": [
+    "year",
+    "category",
+    "revenue",
+    "rn"
+   ],
+   "rows": [
+    [
+     "2017",
+     "bed_bath_table",
+     "497970.94",
+     "1"
+    ],
+    [
+     "2017",
+     "watches_gifts",
+     "486519.02",
+     "2"
+    ],
+    [
+     "2017",
+     "health_beauty",
+     "481142.73",
+     "3"
+    ],
+    [
+     "2018",
+     "health_beauty",
+     "770002.81",
+     "1"
+    ],
+    [
+     "2018",
+     "watches_gifts",
+     "708305.95",
+     "2"
+    ],
+    [
+     "2018",
+     "bed_bath_table",
+     "537514.13",
+     "3"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "D01",
+  "category": "D",
+  "question": "销量最好的品类是哪个？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“销量”口径歧义：件数/订单数/销售额"
+ },
+ {
+  "id": "D02",
+  "category": "D",
+  "question": "哪些商品的销量比较差？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“销量”口径歧义"
+ },
+ {
+  "id": "D03",
+  "category": "D",
+  "question": "卖家销量排名是怎样的？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“销量”口径歧义"
+ },
+ {
+  "id": "D04",
+  "category": "D",
+  "question": "2018 年销量怎么样？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“销量”口径歧义"
+ },
+ {
+  "id": "D05",
+  "category": "D",
+  "question": "哪个品类卖得最好？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“卖得好”无明确口径"
+ },
+ {
+  "id": "D06",
+  "category": "D",
+  "question": "大客户贡献了多少钱？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“大客户”无定义"
+ },
+ {
+  "id": "D07",
+  "category": "D",
+  "question": "优质卖家的平均评分是多少？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“优质卖家”无定义"
+ },
+ {
+  "id": "D08",
+  "category": "D",
+  "question": "热卖商品有哪些？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“热卖”无阈值与口径"
+ },
+ {
+  "id": "D09",
+  "category": "D",
+  "question": "忠实客户有多少？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“忠实客户”无定义"
+ },
+ {
+  "id": "D10",
+  "category": "D",
+  "question": "大订单的平均金额是多少？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“大订单”无阈值"
+ },
+ {
+  "id": "D11",
+  "category": "D",
+  "question": "平台业绩怎么样？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“业绩”无明确指标"
+ },
+ {
+  "id": "D12",
+  "category": "D",
+  "question": "哪些品类表现不好？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“表现”无明确指标"
+ },
+ {
+  "id": "D13",
+  "category": "D",
+  "question": "新用户的购买情况如何？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“新用户”时间窗无定义"
+ },
+ {
+  "id": "D14",
+  "category": "D",
+  "question": "畅销品有多少个？",
+  "lang": "zh",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“畅销”无阈值"
+ },
+ {
+  "id": "D15",
+  "category": "D",
+  "question": "How many VIP customers does the platform have?",
+  "lang": "en",
+  "expect": "clarify",
+  "gold_sql": null,
+  "note": "“VIP”无定义"
+ },
+ {
+  "id": "E01",
+  "category": "E",
+  "question": "今天天气怎么样？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "与数据无关"
+ },
+ {
+  "id": "E02",
+  "category": "E",
+  "question": "帮我写一段 Python 快速排序",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "编程求助"
+ },
+ {
+  "id": "E03",
+  "category": "E",
+  "question": "苹果公司的股价是多少？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "实时外部数据"
+ },
+ {
+  "id": "E04",
+  "category": "E",
+  "question": "平台的广告投放 ROI 是多少？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "无广告数据"
+ },
+ {
+  "id": "E05",
+  "category": "E",
+  "question": "现在仓库里还剩多少库存？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "无库存数据"
+ },
+ {
+  "id": "E06",
+  "category": "E",
+  "question": "帮我查一下某个订单的物流单号",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "无物流单号数据"
+ },
+ {
+  "id": "E07",
+  "category": "E",
+  "question": "客户张三的手机号是多少？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "无个人隐私数据"
+ },
+ {
+  "id": "E08",
+  "category": "E",
+  "question": "预测一下 2025 年的销售额会是多少？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "不做外推预测"
+ },
+ {
+  "id": "E09",
+  "category": "E",
+  "question": "Olist 和亚马逊谁的销售额更高？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "外部对比数据"
+ },
+ {
+  "id": "E10",
+  "category": "E",
+  "question": "把总销售额按当前汇率换算成美元",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "需要实时汇率"
+ },
+ {
+  "id": "E11",
+  "category": "E",
+  "question": "平台的退货率是多少？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "无退货数据"
+ },
+ {
+  "id": "E12",
+  "category": "E",
+  "question": "平台的利润率是多少？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "无成本数据"
+ },
+ {
+  "id": "E13",
+  "category": "E",
+  "question": "客服的平均响应时间是多少？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "无客服数据"
+ },
+ {
+  "id": "E14",
+  "category": "E",
+  "question": "网站的日均访问量是多少？",
+  "lang": "zh",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "无流量数据"
+ },
+ {
+  "id": "E15",
+  "category": "E",
+  "question": "What is Olist's market share in Brazil?",
+  "lang": "en",
+  "expect": "refuse",
+  "gold_sql": null,
+  "note": "外部市场数据"
+ }
+]

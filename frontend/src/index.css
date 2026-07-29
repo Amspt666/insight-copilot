@@ -1,0 +1,112 @@
+/* Hallmark · macrostructure: product-as-hero + numbered-pipeline + data-dashboard
+ * theme: warm-paper/teal-ink · genre: modern-minimal
+ * pre-emit critique: P4 H4 E4 S4 R5 V4
+ * slop test: pass
+ *
+ * 设计令牌（唯一事实源）：所有颜色与字体只允许引用本文件中的命名 token，
+ * 组件中不得出现散落的色值与 font-family 声明。
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* —— 色板：暖纸面 + 浓墨 + 深青 —— */
+    --paper: 40 33% 97%;          /* 页面底色：暖白纸面 */
+    --card: 0 0% 100%;
+    --ink: 28 14% 13%;            /* 主文字：暖浓墨 */
+    --ink-soft: 28 6% 38%;        /* 次级文字 */
+    --hairline: 36 14% 86%;       /* 发丝级分隔线 */
+    --teal: 192 64% 25%;          /* 强调色：深青 */
+    --teal-strong: 192 70% 20%;
+    --teal-soft: 192 30% 93%;     /* 深青的浅底 */
+    --teal-mid: 192 45% 45%;      /* 图表次系列：介于深青与浅底之间 */
+    --amber-warn: 36 85% 42%;     /* 警告（溯源未通过/存疑） */
+    --green-ok: 152 45% 32%;      /* 通过态 */
+    --red-no: 8 68% 44%;          /* 拒绝/错误态 */
+    --code-bg: 30 10% 15%;        /* 代码块底（深墨） */
+    --code-ink: 40 25% 92%;
+
+    /* —— shadcn 主题变量（映射到上方色板） —— */
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card-foreground: var(--ink);
+    --popover: var(--card);
+    --popover-foreground: var(--ink);
+    --primary: var(--teal);
+    --primary-foreground: 40 33% 97%;
+    --secondary: 40 20% 93%;
+    --secondary-foreground: var(--ink);
+    --muted: 40 16% 94%;
+    --muted-foreground: var(--ink-soft);
+    --accent: var(--teal-soft);
+    --accent-foreground: var(--teal-strong);
+    --destructive: var(--red-no);
+    --destructive-foreground: 0 0% 98%;
+    --border: var(--hairline);
+    --input: var(--hairline);
+    --ring: var(--teal);
+    --radius: 0.5rem;
+    --sidebar-background: var(--paper);
+    --sidebar-foreground: var(--ink);
+    --sidebar-primary: var(--teal);
+    --sidebar-primary-foreground: 40 33% 97%;
+    --sidebar-accent: var(--teal-soft);
+    --sidebar-accent-foreground: var(--teal-strong);
+    --sidebar-border: var(--hairline);
+    --sidebar-ring: var(--teal);
+
+    /* —— 字体 —— */
+    --font-ui: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    --font-display: "Noto Serif SC", "Songti SC", Georgia, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+}
+
+@layer base {
+  html {
+    overflow-x: clip;             /* Gate 62：clip 而非 hidden */
+    scroll-behavior: smooth;
+  }
+  body {
+    overflow-x: clip;
+    background-color: hsl(var(--paper));
+    color: hsl(var(--ink));
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .font-display {
+    overflow-wrap: anywhere;      /* Gate 63：长词内换行 */
+    min-width: 0;
+  }
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+  ::selection {
+    background: hsl(var(--teal) / 0.18);
+  }
+}
+
+@layer utilities {
+  .font-ui { font-family: var(--font-ui); }
+  .font-display { font-family: var(--font-display); }
+  .font-mono { font-family: var(--font-mono); }
+  .text-ink { color: hsl(var(--ink)); }
+  .text-ink-soft { color: hsl(var(--ink-soft)); }
+  .text-teal { color: hsl(var(--teal)); }
+  .text-warn { color: hsl(var(--amber-warn)); }
+  .text-ok { color: hsl(var(--green-ok)); }
+  .text-no { color: hsl(var(--red-no)); }
+  .text-on-teal { color: hsl(var(--primary-foreground)); }
+  .text-code-ink { color: hsl(var(--code-ink)); }
+  .bg-paper { background-color: hsl(var(--paper)); }
+  .bg-teal { background-color: hsl(var(--teal)); }
+  .bg-teal-soft { background-color: hsl(var(--teal-soft)); }
+  .bg-code { background-color: hsl(var(--code-bg)); }
+  .bg-teal-strong { background-color: hsl(var(--teal-strong)); }
+  .border-hairline { border-color: hsl(var(--hairline)); }
+  .border-teal { border-color: hsl(var(--teal)); }
+  .shadow-card { box-shadow: 0 1px 2px hsl(var(--ink) / 0.04); }
+  .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+}

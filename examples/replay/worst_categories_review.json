@@ -1,0 +1,71 @@
+{
+ "question": "差评率最高的前三个品类是哪些（评价数超过100）？",
+ "status": "ok",
+ "stages": [
+  {
+   "stage": "execute",
+   "ok": true,
+   "attempt": 0
+  },
+  {
+   "stage": "backtranslate",
+   "ok": true,
+   "reason": "回译明确了差评占比、评论数量过滤和前三名，与用户问题的指标、过滤条件及排序一致。"
+  }
+ ],
+ "gate": {
+  "action": "answer",
+  "reason": "问题涉及差评率，属于电商评价数据指标，且未触发歧义规则，可直接计算。",
+  "clarify_question": "",
+  "options": []
+ },
+ "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(COUNT(*) FILTER (r.review_score <= 2) * 1.0 / COUNT(*), 4) AS bad_review_rate,\n       COUNT(*) AS review_count\nFROM reviews r\nJOIN orders o ON o.order_id = r.order_id AND o.order_status NOT IN ('canceled', 'unavailable')\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nGROUP BY ct.product_category_name_english\nHAVING COUNT(*) > 100\nORDER BY bad_review_rate DESC\nLIMIT 3",
+ "explanation": "该查询统计了各商品品类中，有效订单里评分较低（≤2分）的差评占比，并筛选出评论数量足够多的品类，最终找出差评率最高的前三名。",
+ "consistency": {
+  "consistent": true,
+  "reason": "回译明确了差评占比、评论数量过滤和前三名，与用户问题的指标、过滤条件及排序一致。"
+ },
+ "columns": [
+  "category",
+  "bad_review_rate",
+  "review_count"
+ ],
+ "rows": [
+  [
+   "fashion_male_clothing",
+   0.2769,
+   130
+  ],
+  [
+   "office_furniture",
+   0.261,
+   1686
+  ],
+  [
+   "fixed_telephony",
+   0.2471,
+   259
+  ]
+ ],
+ "truncated": false,
+ "chart": {
+  "type": "bar",
+  "x": "category",
+  "y": [
+   "bad_review_rate",
+   "review_count"
+  ]
+ },
+ "insight": "差评率最高的前三个品类（评价数超过100）分别是：fashion_male_clothing（差评率27.69%，评价数130）、office_furniture（差评率26.10%，评价数1686）和fixed_telephony（差评率24.71%，评价数259）。值得注意的是，office_furniture的差评率高达26.10%且评价数远超其他两个品类，说明其差评问题在大量订单中普遍存在，需优先关注。",
+ "grounding": {
+  "total": 0,
+  "supported": 0,
+  "faithfulness": 1.0,
+  "unsupported": []
+ },
+ "repairs": 0,
+ "warning": null,
+ "latency_ms": 104299,
+ "model": "deepseek-v4-flash",
+ "category": "体验治理"
+}

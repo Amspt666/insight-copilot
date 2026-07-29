@@ -1,0 +1,52 @@
+{
+ "question": "整体复购率是多少？",
+ "status": "ok",
+ "stages": [
+  {
+   "stage": "execute",
+   "ok": true,
+   "attempt": 0
+  },
+  {
+   "stage": "backtranslate",
+   "ok": true,
+   "reason": "回译准确解释了复购率的标准定义，与用户查询的整体复购率一致。"
+  }
+ ],
+ "gate": {
+  "action": "answer",
+  "reason": "复购率是语义层已有明确口径的指标，未触发歧义规则，可直接回答",
+  "clarify_question": "",
+  "options": []
+ },
+ "sql": "SELECT ROUND(COUNT(*) FILTER (cnt >= 2) * 1.0 / COUNT(*), 2) AS repurchase_rate\nFROM (\n  SELECT c.customer_unique_id,\n         COUNT(DISTINCT o.order_id) AS cnt\n  FROM customers c\n  JOIN orders o ON o.customer_id = c.customer_id\n  WHERE o.order_status NOT IN ('canceled', 'unavailable')\n  GROUP BY c.customer_unique_id\n) t",
+ "explanation": "计算所有至少完成两次购买的用户占所有有效购买用户的比例（复购率）。",
+ "consistency": {
+  "consistent": true,
+  "reason": "回译准确解释了复购率的标准定义，与用户查询的整体复购率一致。"
+ },
+ "columns": [
+  "repurchase_rate"
+ ],
+ "rows": [
+  [
+   0.03
+  ]
+ ],
+ "truncated": false,
+ "chart": {
+  "type": "number"
+ },
+ "insight": "整体复购率为3.00%，意味着每100位有效购买用户中仅有约3人完成过二次及以上购买。值得注意的是，这一比率处于极低水平，表明用户留存和重复购买的意愿非常有限，需要重点关注复购激励策略的优化。",
+ "grounding": {
+  "total": 0,
+  "supported": 0,
+  "faithfulness": 1.0,
+  "unsupported": []
+ },
+ "repairs": 0,
+ "warning": null,
+ "latency_ms": 150596,
+ "model": "deepseek-v4-flash",
+ "category": "客户经营"
+}

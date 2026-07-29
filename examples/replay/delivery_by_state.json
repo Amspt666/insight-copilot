@@ -1,0 +1,79 @@
+{
+ "question": "平均配送时长最长的前五个州是哪些？",
+ "status": "ok",
+ "stages": [
+  {
+   "stage": "execute",
+   "ok": true,
+   "attempt": 0
+  },
+  {
+   "stage": "backtranslate",
+   "ok": false,
+   "reason": "回译增加了'有效订单'过滤条件，且'配送天数'与用户问题的'配送时长'可能不一致。"
+  }
+ ],
+ "gate": {
+  "action": "answer",
+  "reason": "问题涉及配送时长，属于电商经营数据，语义明确，无歧义触发词，直接回答。",
+  "clarify_question": "",
+  "options": []
+ },
+ "sql": "SELECT c.customer_state,\n       ROUND(AVG(DATE_DIFF('day', o.order_purchase_timestamp, o.order_delivered_customer_date)), 2) AS avg_delivery_days\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\n  AND o.order_delivered_customer_date IS NOT NULL\nGROUP BY c.customer_state\nORDER BY avg_delivery_days DESC\nLIMIT 5",
+ "explanation": "统计各州有效订单的平均配送天数，并列出天数最长的前五个州。",
+ "consistency": {
+  "consistent": false,
+  "reason": "回译增加了'有效订单'过滤条件，且'配送天数'与用户问题的'配送时长'可能不一致。"
+ },
+ "columns": [
+  "customer_state",
+  "avg_delivery_days"
+ ],
+ "rows": [
+  [
+   "RR",
+   29.34
+  ],
+  [
+   "AP",
+   27.18
+  ],
+  [
+   "AM",
+   26.36
+  ],
+  [
+   "AL",
+   24.5
+  ],
+  [
+   "PA",
+   23.73
+  ]
+ ],
+ "truncated": false,
+ "chart": {
+  "type": "bar",
+  "x": "customer_state",
+  "y": [
+   "avg_delivery_days"
+  ]
+ },
+ "insight": "平均配送时长最长的前五个州依次为：RR（[未溯源:29].34天）、AP（27.18天）、AM（[未溯源:26].36天）、AL（[未溯源:24].5天）和PA（[未溯源:23].73天）。其中，RR州的平均配送天数最高，显著高于其他州，达到29.34天。",
+ "grounding": {
+  "total": 5,
+  "supported": 1,
+  "faithfulness": 0.2,
+  "unsupported": [
+   "29",
+   "26",
+   "24",
+   "23"
+  ]
+ },
+ "repairs": 0,
+ "warning": "意图一致性存疑：回译增加了'有效订单'过滤条件，且'配送天数'与用户问题的'配送时长'可能不一致。；结果仅供参考。洞察中有 4 个数字未能溯源，已标记。",
+ "latency_ms": 583329,
+ "model": "deepseek-v4-flash",
+ "category": "物流体验"
+}

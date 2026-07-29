@@ -1,0 +1,52 @@
+{
+ "question": "2018 年销售额相比 2017 年的增长率是多少？",
+ "status": "ok",
+ "stages": [
+  {
+   "stage": "execute",
+   "ok": true,
+   "attempt": 0
+  },
+  {
+   "stage": "backtranslate",
+   "ok": true,
+   "reason": "回译与用户问题均指2018年相对于2017年的销售额增长率，核心指标、时间范围完全一致。"
+  }
+ ],
+ "gate": {
+  "action": "answer",
+  "reason": "问题明确涉及销售额增长率，数据集中存在所需字段且时间范围在数据覆盖内，未触发歧义规则",
+  "clarify_question": "",
+  "options": []
+ },
+ "sql": "WITH sales_2017 AS (\n    SELECT ROUND(SUM(oi.price), 2) AS revenue\n    FROM orders o\n    JOIN order_items oi ON oi.order_id = o.order_id\n    WHERE o.order_status NOT IN ('canceled', 'unavailable')\n      AND o.order_purchase_timestamp >= '2017-01-01'\n      AND o.order_purchase_timestamp < '2018-01-01'\n),\nsales_2018 AS (\n    SELECT ROUND(SUM(oi.price), 2) AS revenue\n    FROM orders o\n    JOIN order_items oi ON oi.order_id = o.order_id\n    WHERE o.order_status NOT IN ('canceled', 'unavailable')\n      AND o.order_purchase_timestamp >= '2018-01-01'\n      AND o.order_purchase_timestamp < '2019-01-01'\n)\nSELECT ROUND((s2018.revenue - s2017.revenue) / s2017.revenue * 100, 2) AS growth_rate_percent\nFROM sales_2017 s2017, sales_2018 s2018",
+ "explanation": "计算2018年相较于2017年的销售额增长率（百分比）。",
+ "consistency": {
+  "consistent": true,
+  "reason": "回译与用户问题均指2018年相对于2017年的销售额增长率，核心指标、时间范围完全一致。"
+ },
+ "columns": [
+  "growth_rate_percent"
+ ],
+ "rows": [
+  [
+   20.18
+  ]
+ ],
+ "truncated": false,
+ "chart": {
+  "type": "number"
+ },
+ "insight": "2018 年销售额相比 2017 年的增长率为 20.18%。值得关注的是，这一增长率直接反映了两年度销售额的明确提升幅度。",
+ "grounding": {
+  "total": 3,
+  "supported": 3,
+  "faithfulness": 1.0,
+  "unsupported": []
+ },
+ "repairs": 0,
+ "warning": null,
+ "latency_ms": 81370,
+ "model": "deepseek-v4-flash",
+ "category": "增长分析"
+}

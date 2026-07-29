@@ -1,0 +1,23 @@
+{
+ "question": "销量最高的三个品类是哪些？",
+ "status": "clarify",
+ "stages": [],
+ "gate": {
+  "action": "clarify",
+  "reason": "问题包含触发词「销量」，不同口径（商品件数/订单数/销售额）会导致不同的排名结果，需要明确用户所指口径。",
+  "clarify_question": "您说的“销量”希望按哪个口径统计？",
+  "options": [
+   "商品件数",
+   "订单数",
+   "销售额"
+  ]
+ },
+ "clarify_question": "您说的“销量”希望按哪个口径统计？",
+ "options": [
+  "商品件数",
+  "订单数",
+  "销售额"
+ ],
+ "latency_ms": 42729,
+ "category": "可信机制·澄清"
+}

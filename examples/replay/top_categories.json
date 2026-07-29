@@ -1,0 +1,74 @@
+{
+ "question": "销售额最高的前五个品类是哪些？",
+ "status": "ok",
+ "stages": [
+  {
+   "stage": "execute",
+   "ok": true,
+   "attempt": 0
+  },
+  {
+   "stage": "backtranslate",
+   "ok": false,
+   "reason": "用户问题未指定订单状态，而SQL回译添加了‘已成功完成’的过滤条件，导致范围不一致"
+  }
+ ],
+ "gate": {
+  "action": "answer",
+  "reason": "问题涉及销售额，是语义层明确指标，未指定时间默认全量，直接回答。",
+  "clarify_question": "",
+  "options": []
+ },
+ "sql": "SELECT ct.product_category_name_english AS category,\n       ROUND(SUM(oi.price), 2) AS revenue\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN category_translation ct ON ct.product_category_name = p.product_category_name\nWHERE o.order_status NOT IN ('canceled', 'unavailable')\nGROUP BY 1\nORDER BY revenue DESC\nLIMIT 5",
+ "explanation": "按产品类别统计已成功完成的订单收入，并列出收入最高的前五个类别。",
+ "consistency": {
+  "consistent": false,
+  "reason": "用户问题未指定订单状态，而SQL回译添加了‘已成功完成’的过滤条件，导致范围不一致"
+ },
+ "columns": [
+  "category",
+  "revenue"
+ ],
+ "rows": [
+  [
+   "health_beauty",
+   1255695.13
+  ],
+  [
+   "watches_gifts",
+   1198185.21
+  ],
+  [
+   "bed_bath_table",
+   1035964.06
+  ],
+  [
+   "sports_leisure",
+   979740.92
+  ],
+  [
+   "computers_accessories",
+   904322.02
+  ]
+ ],
+ "truncated": false,
+ "chart": {
+  "type": "bar",
+  "x": "category",
+  "y": [
+   "revenue"
+  ]
+ },
+ "insight": "销售额最高的前五个品类依次为：health_beauty（1255695.13）、watches_gifts（1198185.21）、bed_bath_table（1035964.06）、sports_leisure（979740.92）及computers_accessories（904322.02）。最值得关注的是，排名首位的health_beauty品类收入显著领先，其金额比第二名watches_gifts高出57509.92。",
+ "grounding": {
+  "total": 5,
+  "supported": 5,
+  "faithfulness": 1.0,
+  "unsupported": []
+ },
+ "repairs": 0,
+ "warning": "意图一致性存疑：用户问题未指定订单状态，而SQL回译添加了‘已成功完成’的过滤条件，导致范围不一致；结果仅供参考。",
+ "latency_ms": 655633,
+ "model": "deepseek-v4-flash",
+ "category": "品类洞察"
+}

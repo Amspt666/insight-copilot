@@ -1,0 +1,330 @@
+{
+ "config": "no_clarify",
+ "enable": {
+  "clarify": false
+ },
+ "summary": {
+  "total": 30,
+  "answerable": {
+   "n": 0,
+   "execution_accuracy": null,
+   "answer_rate": null,
+   "wrong_refusal_rate": null,
+   "wrong_clarify_rate": null,
+   "avg_repairs": null,
+   "insight_faithfulness": null,
+   "backtranslate_consistency": null
+  },
+  "clarify": {
+   "n": 15,
+   "clarify_rate": 0.0
+  },
+  "refuse": {
+   "n": 15,
+   "refuse_rate": 0.0
+  },
+  "avg_latency_s": 5.7
+ },
+ "records": [
+  {
+   "id": "D01",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.7,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D08",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.7,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D04",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.8,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D02",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.9,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D03",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.9,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D05",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 6.0,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D06",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 6.6,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D07",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 7.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D09",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D10",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D14",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.6,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D12",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 5.8,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E01",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 4.6,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D11",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 6.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D13",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 6.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "D15",
+   "category": "D",
+   "expect": "clarify",
+   "status": "ok",
+   "latency_s": 7.1,
+   "repairs": 1,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E03",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 4.3,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E05",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 4.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E02",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 4.9,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E04",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 5.0,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E08",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 4.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E07",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 5.2,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E06",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 6.9,
+   "repairs": 1,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E09",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 5.4,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E11",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 4.8,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E10",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 5.6,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E13",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 5.3,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E12",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 6.0,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E14",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 6.5,
+   "repairs": 1,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  },
+  {
+   "id": "E15",
+   "category": "E",
+   "expect": "refuse",
+   "status": "ok",
+   "latency_s": 6.5,
+   "repairs": 0,
+   "correct": false,
+   "blocked_as": "answered_anyway"
+  }
+ ]
+}
