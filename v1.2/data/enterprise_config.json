@@ -1,0 +1,27 @@
+{
+  "config_version": "finance-demo-2026.1",
+  "domain": "finance.ar",
+  "tenant": "demo-enterprise",
+  "semantic_version": "finance.ar/2026.1",
+  "lineage_snapshot": "finance-demo-2026.1",
+  "allowed_companies": ["1000", "2000"],
+  "read_only": {
+    "allowed_statements": ["SELECT"],
+    "max_rows": 50,
+    "max_seconds": 5,
+    "blocked_operations": ["INSERT", "UPDATE", "DELETE", "MERGE", "DDL", "ATTACH", "DETACH", "PRAGMA"]
+  },
+  "model_policy": {
+    "router": "optional",
+    "semantic_resolution": "required",
+    "join_decision": "deterministic_only",
+    "query_intent": "required",
+    "sql_generation": "constrained_optional",
+    "insight": "verified_facts_only"
+  },
+  "authoritative_inputs": [
+    "data/semantic.json",
+    "data/lineage_relations.csv",
+    "data/enterprise_config.json"
+  ]
+}

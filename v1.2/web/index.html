@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light"><title>问数 · 财务工作台</title>
+  <link rel="stylesheet" href="/static/styles.css"><script src="/static/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="问数首页"><span class="brand-icon">问</span><span>问数<small>财务分析工作台</small></span></a>
+    <nav aria-label="主导航">
+      <button class="nav-item active" data-view="workspace">问数工作台 <span>↗</span></button>
+      <button class="nav-item" data-view="catalog">业务口径与数据 <span>≡</span></button>
+    </nav>
+    <div class="sidebar-note"><span class="status-dot"></span> SAP 风格模拟账套<p>应收与回款分析<br>数据截至 2026年6月30日</p><span class="version">v1.1 Demo</span></div>
+  </aside>
+  <main>
+    <header class="topbar"><span>财务 / 应收与回款</span><div id="connection" role="status">正在读取服务状态…</div></header>
+    <section id="workspace-view">
+      <div class="page-heading"><div><h1>把每一笔应收，问清楚。</h1><p>查询余额、追踪回款，沿着证据核对答案。</p></div><span class="demo-label">虚构企业 · 演示数据</span></div>
+      <div class="workspace-grid">
+        <section class="conversation-panel" aria-labelledby="ask-title">
+          <div class="panel-heading"><h2 id="ask-title">财务问答</h2><button class="text-button" id="new-chat" type="button">新对话</button></div>
+          <div id="chat-log" class="chat-log" aria-live="polite"><div class="welcome"><span class="assistant-mark">问</span><p>从一个具体的问题开始。</p><p class="muted">例如：上月底哪些客户欠款最多？<br>“上月”以演示日期 2026年7月1日为基准。</p></div></div>
+          <div class="suggestions" aria-label="示例问题">
+            <button type="button" data-question="截至2026年6月30日，人民币应收余额最多的前十个客户">客户欠款排名</button>
+            <button type="button" data-question="截至2026年6月30日，人民币应收账龄分布">应收账龄分布</button>
+            <button type="button" data-question="2026年1月到6月每月人民币回款是多少">月度回款趋势</button>
+            <button type="button" data-question="截至2026年6月30日，人民币应收余额比2026年5月31日变化多少，按客户分析">客户余额变化</button>
+          </div>
+          <form id="ask-form"><label class="sr-only" for="question">你的财务问题</label><textarea id="question" required maxlength="1200" rows="3" placeholder="输入问题；需要时补充公司、日期或客户…"></textarea><div class="composer-footer"><span>Enter 发送 · Shift + Enter 换行</span><button class="primary" id="send" type="submit">查询</button></div></form>
+        </section>
+        <section class="result-panel" aria-labelledby="result-title">
+          <div class="panel-heading"><h2 id="result-title">分析结果</h2><span id="result-state" class="muted">等待查询</span></div>
+          <div id="empty-result" class="empty-result"><div class="ledger-art" aria-hidden="true"><span></span><span></span><span></span><span></span></div><h3>答案从账目出发</h3><p>查询后，在这里查看业务解释、明细和证据。<br>每个金额都对应明确的时间与币种。</p></div>
+          <div id="result-content" hidden>
+            <div id="scope" class="scope"></div><div class="result-summary"><div><span id="total-label">全部匹配记录合计</span><strong id="total-value"></strong></div><div id="comparison" hidden></div></div>
+            <div id="insights" class="insights"></div><div id="warnings" class="warnings"></div>
+            <div class="result-tabs" role="tablist" aria-label="结果视图"><button class="active" id="tab-chart" role="tab" aria-controls="panel-chart" aria-selected="true" data-tab="chart">图表</button><button id="tab-table" role="tab" aria-controls="panel-table" aria-selected="false" data-tab="table">明细</button><button id="tab-evidence" role="tab" aria-controls="panel-evidence" aria-selected="false" data-tab="evidence">证据</button></div>
+            <div id="panel-chart" role="tabpanel" aria-labelledby="tab-chart"><div id="chart" class="bar-chart"></div><p id="chart-note" class="muted"></p></div>
+            <div id="panel-table" role="tabpanel" aria-labelledby="tab-table" hidden><div class="export-row"><button class="text-button" id="export-csv">导出当前明细 CSV</button></div><div class="table-scroll"><table id="result-table"></table></div></div>
+            <div id="panel-evidence" role="tabpanel" aria-labelledby="tab-evidence" hidden><div class="export-row"><button class="text-button" id="export-json">下载本次查询证据</button></div><div id="evidence-list"></div></div>
+            <details class="technical"><summary>查询过程与口径</summary><ol id="trace"></ol><h3>指标定义</h3><p id="definition"></p><h3>查询计划</h3><pre id="plan-json"></pre><h3>执行 SQL</h3><pre id="sql"></pre><h3>绑定参数</h3><pre id="params"></pre><h3>字段与关联</h3><pre id="metadata"></pre><h3>执行检查</h3><pre id="checks"></pre></details>
+          </div>
+        </section>
+      </div>
+    </section>
+    <section id="catalog-view" hidden><div class="page-heading"><div><h1>业务口径与数据</h1><p>业务名称如何对应到 SAP 风格字段。</p></div></div><div id="catalog-content"></div></section>
+    <footer>模拟账套不代表真实企业经营情况。当前覆盖应收与回款，不包含收入确认、利润或预测。</footer>
+  </main>
+</body>
+</html>

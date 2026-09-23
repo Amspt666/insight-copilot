@@ -1,0 +1,8 @@
+.env
+.venv/
+data/*.sqlite
+data/manifest.json
+data/control_totals.json
+__pycache__/
+*.pyc
+eval/results/
