@@ -180,10 +180,12 @@ version: 2026.1
 
 ## 仓库版本
 
-### v1.2：企业只读架构包
+### v1.2：企业只读架构 Demo 与评测
 
-v1.2 是架构、契约、模板和验收框架，不宣称已经连接某个企业生产系统。详见 [`v1.2/`](v1.2/)：
+v1.2 是可运行的虚构 SAP 财务只读 Demo，同时提供企业输入契约、模板和验收框架。它不宣称已经连接某个企业生产系统；真实企业必须替换业务语义、字段绑定、权威血缘、权限和质量规则。详见 [`v1.2/`](v1.2/)：
 
+- [运行 Demo 与评测入口](v1.2/README.md)
+- [DeepSeek Flash 多组实验报告](v1.2/eval/EXPERIMENT_REPORT.md)
 - [完整架构](v1.2/docs/ARCHITECTURE.md)
 - [企业输入契约](v1.2/docs/ENTERPRISE_INPUT_CONTRACT.md)
 - [元数据与血缘规范](v1.2/docs/METADATA_LINEAGE_SPEC.md)

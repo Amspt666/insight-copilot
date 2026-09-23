@@ -1,0 +1,39 @@
+{
+  "version": "1.1.0",
+  "domain": "finance.ar",
+  "name": "SAP 风格应收与回款",
+  "calendar": {"start": "2025-01-01", "end": "2026-06-30", "today": "2026-07-01"},
+  "conventions": [
+    "模拟时钟固定为 2026-07-01；上月指 2026-06，本月尚无数据，需澄清。",
+    "默认公司范围为服务端授权的全部公司，默认币种为 CNY，回答必须披露。",
+    "WRBTR/DMBTR/AMOUNT 为整数分；WRBTR 对应 BKPF.WAERS，DMBTR 对应 T001.WAERS。",
+    "仅查询客户账户 KOART=D；借方 S 增加应收，贷方 H 减少应收。",
+    "历史未结金额=截止日已过账发票金额-截止日已生效的核销；不可用当前 AUGDT 简单过滤代替。",
+    "逾期天数按截止日减到期日；大于阈值才计入。到期当天不逾期。",
+    "账龄以逾期天数分为未到期、1–30天、31–60天、61–90天、90天以上。",
+    "所有收款均已分配到发票；不支持预收款、剩余项目法、汇兑损益、撤销清账、合并抵销与净额轧差。",
+    "回款取 DZ 凭证客户贷方发生额，贷项凭证 DG 不属于现金回款。",
+    "不提供含税销售额/收入/利润/现金流量表/预测；应收发生额不等于确认收入。"
+  ],
+  "metrics": {
+    "ar_balance": {"name": "应收余额", "synonyms": ["欠款", "未收款", "未结余额", "应收账款", "余额"], "definition": "截至指定日期，已过账应收发票扣除当日及以前核销后的未结金额。", "tables": ["BKPF", "BSEG", "KNA1", "T001", "ZAR_APPLICATION"], "dimensions": ["total", "customer", "company"]},
+    "overdue_ar": {"name": "逾期应收", "synonyms": ["逾期", "超期", "拖欠"], "definition": "截止日未结发票中，截止日减到期日严格大于 overdue_days 的金额。", "tables": ["BKPF", "BSEG", "KNA1", "T001", "ZAR_APPLICATION"], "dimensions": ["total", "customer", "company"]},
+    "aging": {"name": "应收账龄", "synonyms": ["账龄", "年龄结构"], "definition": "按逾期天数分桶的未结应收；到期当天属于未到期桶。", "tables": ["BKPF", "BSEG", "KNA1", "T001", "ZAR_APPLICATION"], "dimensions": ["aging"]},
+    "receipts": {"name": "期间回款", "synonyms": ["回款", "到账", "收款", "收回"], "definition": "期间内 DZ 收款凭证客户贷方金额，按过账日期统计，包含起止日期；不包含贷项调整。", "tables": ["BKPF", "BSEG", "KNA1", "T001"], "dimensions": ["total", "customer", "company", "month"]},
+    "balance_change": {"name": "应收余额变化", "synonyms": ["增加", "减少", "变化", "对比", "增量", "环比"], "definition": "本期截止日应收余额减去比较截止日余额；变化率由程序计算，比较余额为零时不定义。仅作差额分解，不推断原因。", "tables": ["BKPF", "BSEG", "KNA1", "T001", "ZAR_APPLICATION"], "dimensions": ["total", "customer", "company"]}
+  },
+  "tables": {
+    "T001": {"name": "公司代码", "key": ["MANDT", "BUKRS"], "fields": {"MANDT": "客户端", "BUKRS": "公司代码", "BUTXT": "公司名称", "WAERS": "本位币"}},
+    "KNA1": {"name": "客户一般数据", "key": ["MANDT", "KUNNR"], "fields": {"MANDT": "客户端", "KUNNR": "客户编号（保留前导零）", "NAME1": "客户名称", "SORTL": "检索名称"}},
+    "KNB1": {"name": "客户公司数据", "key": ["MANDT", "KUNNR", "BUKRS"], "fields": {"MANDT": "客户端", "KUNNR": "客户编号", "BUKRS": "公司代码", "ZTERM": "付款条件"}},
+    "BKPF": {"name": "会计凭证抬头", "key": ["MANDT", "BUKRS", "GJAHR", "BELNR"], "fields": {"MANDT": "客户端", "BUKRS": "公司代码", "GJAHR": "会计年度", "BELNR": "凭证编号", "BLART": "DR应收发票/DZ回款/DG贷项", "BUDAT": "过账日期", "BLDAT": "凭证日期", "WAERS": "凭证币种"}},
+    "BSEG": {"name": "会计凭证明细", "key": ["MANDT", "BUKRS", "GJAHR", "BELNR", "BUZEI"], "fields": {"MANDT": "客户端", "BUKRS": "公司代码", "GJAHR": "会计年度", "BELNR": "凭证编号", "BUZEI": "行项目", "KOART": "D客户/S总账", "KUNNR": "客户编号", "SHKZG": "S借方/H贷方", "WRBTR": "凭证币金额（模拟整数分）", "DMBTR": "本位币金额（模拟整数分）", "ZFBDT": "付款基准日", "ZBD1T": "简化付款天数", "AUGBL": "最终清账凭证", "AUGDT": "最终清账日期"}},
+    "ZAR_APPLICATION": {"name": "Demo 自定义核销事件", "key": ["ID"], "fields": {"ID": "核销事件ID", "MANDT": "客户端", "BUKRS": "公司代码", "INV_GJAHR": "发票年度", "INV_BELNR": "发票凭证", "INV_BUZEI": "发票行", "PAY_GJAHR": "核销来源年度", "PAY_BELNR": "核销来源凭证", "PAY_BUZEI": "核销来源行", "APPLIED_ON": "核销生效日期", "AMOUNT": "核销金额（凭证币整数分）"}}
+  },
+  "joins": [
+    {"left": "BSEG", "right": "BKPF", "keys": ["MANDT", "BUKRS", "GJAHR", "BELNR"], "cardinality": "N:1"},
+    {"left": "BSEG", "right": "KNA1", "keys": ["MANDT", "KUNNR"], "cardinality": "N:1"},
+    {"left": "BSEG", "right": "T001", "keys": ["MANDT", "BUKRS"], "cardinality": "N:1"},
+    {"left": "BSEG", "right": "ZAR_APPLICATION", "keys": ["MANDT", "BUKRS", "GJAHR=INV_GJAHR", "BELNR=INV_BELNR", "BUZEI=INV_BUZEI"], "cardinality": "1:N", "rule": "先按发票行和截止日聚合核销，再关联发票；禁止直接对连接后的 WRBTR 求和"}
+  ]
+}
