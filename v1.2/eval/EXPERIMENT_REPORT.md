@@ -64,7 +64,7 @@ python eval/run_eval.py --repeat 2
 2. 最大收益来自边界行为：trusted 的澄清、不支持和安全状态均为 100%；raw baseline 的澄清正确率只有 57.14%。这支持“企业语义和能力边界应由程序/配置约束”的设计。
 3. Join Planner 的权威血缘和 Query Planner 的类型化字段，减少了余额变化等多时点计划的结构错误；`AR06`、`AR13` 是对照组的直接反例。
 4. 只读和 Grounding 不应依赖模型自觉。trusted 的 12 阶段 trace、血缘 ID、只读标记和结果校验全部存在；baseline 没有这些可审计证据。
-5. trusted 平均延迟高于两个 baseline，主要来自两次 DeepSeek 调用和更多校验步骤。企业上线时应把延迟、成本和可信度一起作为验收指标。
+5. trusted 包含两次模型调用和更多校验步骤；本轮平均延迟为 1,901ms，catalog baseline 为 1,791ms，raw baseline 为 2,236ms。模型重试、输出长度和网络波动会影响单轮排序，企业上线时应把延迟、成本和可信度一起作为验收指标。
 
 ## 7. 与类似系统范式的差距
 
