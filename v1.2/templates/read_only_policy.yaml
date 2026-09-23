@@ -1,0 +1,10 @@
+enterprise_id: enterprise-demo
+mode: read_only
+allowed_objects: []
+denied_operations: [INSERT, UPDATE, DELETE, MERGE, DDL, WRITE_PROCEDURE, FILE_ACCESS, NETWORK_FUNCTION]
+row_scope: []
+column_scope: []
+export_policy: approval_required
+source_snapshot_required: true
+policy_owner: security-owner
+approval_state: draft

@@ -1,0 +1,16 @@
+metric_id: ar_balance
+enterprise_id: enterprise-demo
+domain: finance.ar
+business_name: 企业确认的应收余额名称
+synonyms: []
+definition: 企业确认的业务定义
+grain: customer-company-currency-as_of
+formula: 企业批准的计算规则引用
+time_role: 企业确认的时间字段
+currency_policy: 企业确认的币种与汇率规则
+exclusions: []
+source_bindings: []
+clarification_rules: []
+owner: finance-owner
+approval_state: draft
+version: 2026.1

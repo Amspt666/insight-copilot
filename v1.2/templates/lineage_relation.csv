@@ -1,0 +1,2 @@
+lineage_id,enterprise_id,source_system_id,upstream_object,upstream_column,downstream_object,downstream_column,transformation_expression,join_key,cardinality,grain_before,grain_after,valid_from,valid_to,source_version,approval_state,owner,updated_at
+L-EXAMPLE-001,enterprise-demo,s4-demo,source_view,customer_id,approved_ar_view,customer_id,,customer_id,N:1,customer_line,customer_day,2026-01-01,,catalog-demo-001,approved,data-governance-owner,2026-06-30T10:00:00+08:00
